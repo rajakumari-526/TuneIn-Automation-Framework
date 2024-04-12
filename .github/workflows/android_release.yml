@@ -1,0 +1,303 @@
+name: Android Release Run
+on:
+  workflow_dispatch:
+    inputs:
+      build_version:
+        required: false
+        description: 'Build Version'
+        default: 'Android build'
+env:
+  BITRISE_ANDROID_APP_SLUG: '783ace2f5373a9a0'
+  BITRISE_API_TOKEN: ${{ secrets.BITRISE_API_TOKEN }}
+  REPORT_PORTAL_TOKEN: ${{ secrets.REPORT_PORTAL_TOKEN }}
+  TEST_RAIL_TOKEN: ${{ secrets.TEST_RAIL_TOKEN }}
+  FIRST_APPIUM_SERVER_PORT: 4951
+  SECOND_APPIUM_SERVER_PORT: 4953
+  THIRD_APPIUM_SERVER_PORT: 4955
+  FOURTH_APPIUM_SERVER_PORT: 4957
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run_daily_tests:
+    runs-on: pr_runner
+    timeout-minutes: 320
+    if: always()
+    name: Run Android Release Tests.
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Check and kill Appium server if runned from previous session
+        run: |
+          if lsof -ti:${{env.FIRST_APPIUM_SERVER_PORT}} > /tmp/test.txt; then echo 'Server will be killed' && kill $(lsof -ti:${{env.FIRST_APPIUM_SERVER_PORT}}); else echo 'Server is not run'; fi
+          if lsof -ti:${{env.SECOND_APPIUM_SERVER_PORT}} > /tmp/test.txt; then echo 'Server will be killed' && kill $(lsof -ti:${{env.SECOND_APPIUM_SERVER_PORT}}); else echo 'Server is not run'; fi
+          if lsof -ti:${{env.THIRD_APPIUM_SERVER_PORT}} > /tmp/test.txt; then echo 'Server will be killed' && kill $(lsof -ti:${{env.THIRD_APPIUM_SERVER_PORT}}); else echo 'Server is not run'; fi
+          if lsof -ti:${{env.FOURTH_APPIUM_SERVER_PORT}} > /tmp/test.txt; then echo 'Server will be killed' && kill $(lsof -ti:${{env.FOURTH_APPIUM_SERVER_PORT}}); else echo 'Server is not run'; fi
+      - name: Run Emulators
+        id: run_emulator
+        run: |
+          PORT_FIRST=$(shuf -i 10000-15000 -n1)
+          NAME_FIRST="Pixel5_"$PORT_FIRST
+          UDID_FIRST="emulator-"$PORT_FIRST
+          
+          PORT_SECOND=$(shuf -i 15001-18000 -n1)
+          NAME_SECOND="Pixel7_"$PORT_SECOND
+          UDID_SECOND="emulator-"$PORT_SECOND
+          
+          PORT_THIRD=$(shuf -i 18001-20000 -n1)
+          NAME_THIRD="Pixel4a_"$PORT_THIRD
+          UDID_THIRD="emulator-"$PORT_THIRD
+          
+          PORT_FOURTH=$(shuf -i 20001-24999 -n1)
+          NAME_FOURTH="Pixel6_"$PORT_FOURTH
+          UDID_FOURTH="emulator-"$PORT_FOURTH
+          
+          echo "EMULATOR_FIRST_NAME=$NAME_FIRST" >> $GITHUB_OUTPUT;
+          echo "EMULATOR_FIRST_UDID=$UDID_FIRST" >> $GITHUB_OUTPUT;
+          echo $NAME_FIRST
+          echo "no" | /Users/serviceaccount/Library/Android/sdk/cmdline-tools/latest/bin/avdmanager --verbose create avd --force --name "$NAME_FIRST" --package "system-images;android-34;google_apis;arm64-v8a" --tag "google_apis" --abi "arm64-v8a" --device "pixel_5"
+          sleep 10
+          RUNNER_TRACKING_ID="" && ~/Library/Android/sdk/emulator/emulator @$NAME_FIRST -port $((PORT_FIRST + 0)) -no-audio -no-window -netdelay none -no-snapshot -wipe-data -gpu auto -no-boot-anim &
+          adb -s $UDID_FIRST wait-for-device
+          FIRST_RAM_SIZE=$(sed -n '/hw.ramSize/p' $HOME/.android/avd/$NAME_FIRST.avd/config.ini)
+          FIRST_HEAP_SIZE=$(sed -n '/vm.heapSize/p' $HOME/.android/avd/$NAME_FIRST.avd/config.ini)
+          echo sed -i "any" "s/$FIRST_RAM_SIZE/hw.ramSize = 10000M/g" $HOME/.android/avd/$NAME_FIRST.avd/config.ini
+          echo sed -i "any" "s/$FIRST_HEAP_SIZE/vm.heapSize = 3000M/g" $HOME/.android/avd/$NAME_FIRST.avd/config.ini
+          sed -i "any" 's/hw.mainKeys = no/hw.mainKeys = yes/g' $HOME/.android/avd/$NAME_FIRST.avd/config.ini
+          adb -s $UDID_FIRST emu kill
+          sleep 10
+          RUNNER_TRACKING_ID="" && ~/Library/Android/sdk/emulator/emulator @$NAME_FIRST -port $((PORT_FIRST + 0)) -no-audio -no-window -netdelay none -no-snapshot -wipe-data -gpu auto -no-boot-anim &
+          adb -s $UDID_FIRST wait-for-device
+          sleep 10
+          
+          echo "EMULATOR_SECOND_NAME=$NAME_SECOND" >> $GITHUB_OUTPUT;
+          echo "EMULATOR_SECOND_UDID=$UDID_SECOND" >> $GITHUB_OUTPUT;
+          echo $NAME_SECOND
+          echo "no" | /Users/serviceaccount/Library/Android/sdk/cmdline-tools/latest/bin/avdmanager --verbose create avd --force --name "$NAME_SECOND" --package "system-images;android-34;google_apis;arm64-v8a" --tag "google_apis" --abi "arm64-v8a" --device "pixel_7"
+          sleep 10
+          RUNNER_TRACKING_ID="" && ~/Library/Android/sdk/emulator/emulator @$NAME_SECOND -port $((PORT_SECOND + 0)) -no-audio -no-window -netdelay none -no-snapshot -wipe-data -gpu auto -no-boot-anim &
+          adb -s $UDID_SECOND wait-for-device
+          SECOND_RAM_SIZE=$(sed -n '/hw.ramSize/p' $HOME/.android/avd/$NAME_SECOND.avd/config.ini)
+          SECOND_HEAP_SIZE=$(sed -n '/vm.heapSize/p' $HOME/.android/avd/$NAME_SECOND.avd/config.ini)
+          sed -i "any" "s/$SECOND_RAM_SIZE/hw.ramSize = 10000M/g" $HOME/.android/avd/$NAME_SECOND.avd/config.ini
+          sed -i "any" "s/$SECOND_HEAP_SIZE/vm.heapSize = 3000M/g" $HOME/.android/avd/$NAME_SECOND.avd/config.ini
+          sed -i "any" 's/hw.mainKeys = no/hw.mainKeys = yes/g' $HOME/.android/avd/$NAME_SECOND.avd/config.ini
+          adb -s $UDID_SECOND emu kill
+          sleep 10
+          RUNNER_TRACKING_ID="" && ~/Library/Android/sdk/emulator/emulator @$NAME_SECOND -port $((PORT_SECOND + 0)) -no-audio -no-window -netdelay none -no-snapshot -wipe-data -gpu auto -no-boot-anim &
+          adb -s $UDID_SECOND wait-for-device
+          sleep 10
+          
+          echo "EMULATOR_THIRD_NAME=$NAME_THIRD" >> $GITHUB_OUTPUT;
+          echo "EMULATOR_THIRD_UDID=$UDID_THIRD" >> $GITHUB_OUTPUT;
+          echo $NAME_THIRD
+          echo "no" | /Users/serviceaccount/Library/Android/sdk/cmdline-tools/latest/bin/avdmanager --verbose create avd --force --name "$NAME_THIRD" --package "system-images;android-34;google_apis;arm64-v8a" --tag "google_apis" --abi "arm64-v8a" --device "pixel_4a"
+          sleep 10
+          RUNNER_TRACKING_ID="" && ~/Library/Android/sdk/emulator/emulator @$NAME_THIRD -port $((PORT_THIRD + 0)) -no-audio -no-window -netdelay none -no-snapshot -wipe-data -gpu auto -no-boot-anim &
+          adb -s $UDID_THIRD wait-for-device
+          THIRD_RAM_SIZE=$(sed -n '/hw.ramSize/p' $HOME/.android/avd/$NAME_THIRD.avd/config.ini)
+          THIRD_HEAP_SIZE=$(sed -n '/vm.heapSize/p' $HOME/.android/avd/$NAME_THIRD.avd/config.ini)
+          sed -i "any" "s/$THIRD_RAM_SIZE/hw.ramSize = 10000M/g" $HOME/.android/avd/$NAME_THIRD.avd/config.ini
+          sed -i "any" "s/$THIRD_HEAP_SIZE/vm.heapSize = 3000M/g" $HOME/.android/avd/$NAME_THIRD.avd/config.ini
+          sed -i "any" 's/hw.mainKeys = no/hw.mainKeys = yes/g' $HOME/.android/avd/$NAME_THIRD.avd/config.ini
+          adb -s $UDID_THIRD emu kill
+          sleep 10
+          RUNNER_TRACKING_ID="" && ~/Library/Android/sdk/emulator/emulator @$NAME_THIRD -port $((PORT_THIRD + 0)) -no-audio -no-window -netdelay none -no-snapshot -wipe-data -gpu auto -no-boot-anim &
+          adb -s $UDID_THIRD wait-for-device
+          sleep 10
+          
+          echo "EMULATOR_FOURTH_NAME=$NAME_FOURTH" >> $GITHUB_OUTPUT;
+          echo "EMULATOR_FOURTH_UDID=$UDID_FOURTH" >> $GITHUB_OUTPUT;
+          echo $NAME_FOURTH
+          echo "no" | /Users/serviceaccount/Library/Android/sdk/cmdline-tools/latest/bin/avdmanager --verbose create avd --force --name "$NAME_FOURTH" --package "system-images;android-34;google_apis;arm64-v8a" --tag "google_apis" --abi "arm64-v8a" --device "pixel_6"
+          sleep 10
+          RUNNER_TRACKING_ID="" && ~/Library/Android/sdk/emulator/emulator @$NAME_FOURTH -port $((PORT_FOURTH + 0)) -no-audio -no-window -netdelay none -no-snapshot -wipe-data -gpu auto -no-boot-anim &
+          adb -s $UDID_FOURTH wait-for-device
+          FOURTH_RAM_SIZE=$(sed -n '/hw.ramSize/p' $HOME/.android/avd/$NAME_FOURTH.avd/config.ini)
+          FOURTH_HEAP_SIZE=$(sed -n '/vm.heapSize/p' $HOME/.android/avd/$NAME_FOURTH.avd/config.ini)
+          sed -i "any" "s/$FOURTH_RAM_SIZE/hw.ramSize = 10000M/g" $HOME/.android/avd/$NAME_FOURTH.avd/config.ini
+          sed -i "any" "s/$FOURTH_HEAP_SIZE/vm.heapSize = 3000M/g" $HOME/.android/avd/$NAME_FOURTH.avd/config.ini
+          sed -i "any" 's/hw.mainKeys = no/hw.mainKeys = yes/g' $HOME/.android/avd/$NAME_FOURTH.avd/config.ini
+          adb -s $UDID_FOURTH emu kill
+          sleep 10
+          RUNNER_TRACKING_ID="" && ~/Library/Android/sdk/emulator/emulator @$NAME_FOURTH -port $((PORT_FOURTH + 0)) -no-audio -no-window -netdelay none -no-snapshot -wipe-data -gpu auto -no-boot-anim &
+          adb -s $UDID_FOURTH wait-for-device
+          sleep 10
+      - name: Get Last Bitrise Build URL
+        id: bitrise-build
+        run: |
+          BITRISE_BUILD_SLUG=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_ANDROID_APP_SLUG}}/builds?sort_by=running_first&workflow=release&status=1&limit=1" -H "accept: application/json" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" | jq -r '.data[] | .slug')
+          echo $BITRISE_BUILD_SLUG
+          ARTIFACT_SLUG=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_ANDROID_APP_SLUG}}/builds/$BITRISE_BUILD_SLUG/artifacts" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data[] | select(.title | startswith("tunein-googleFlavor-tuneinFreeTest-fat-release")) |.slug' )
+          echo $ARTIFACT_SLUG
+          echo "APP_URL=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_ANDROID_APP_SLUG}}/builds/$BITRISE_BUILD_SLUG/artifacts/$ARTIFACT_SLUG" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data | .expiring_download_url' )" >> $GITHUB_OUTPUT
+          echo $APP_URL
+          echo "PUBLIC_APP_URL=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_ANDROID_APP_SLUG}}/builds/$BITRISE_BUILD_SLUG/artifacts/$ARTIFACT_SLUG" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data | .public_install_page_url' )" >> $GITHUB_OUTPUT
+          echo $PUBLIC_APP_URL
+      - name: Download App file
+        run: curl "${{steps.bitrise-build.outputs.APP_URL}}" --output "/Users/serviceaccount/Apps/Android/Daily/tunein_release.apk"
+      - name: Run Gradle Script
+        run: |
+          gradle clean runTest \
+            -Dandroid.useAndroidX=true \
+            -Dandroid.enableJetifier=true \
+            -Dorg.gradle.parallel=true \
+            -Dmobile.os=android \
+            -Dstore.rp.url.in.file=true \
+            -Dorg.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home \
+            -Dudid="${{steps.run_emulator.outputs.EMULATOR_FIRST_UDID}},${{steps.run_emulator.outputs.EMULATOR_SECOND_UDID}},${{steps.run_emulator.outputs.EMULATOR_THIRD_UDID}},${{steps.run_emulator.outputs.EMULATOR_FOURTH_UDID}}" \
+            -Dapp.path="/Users/serviceaccount/Apps/Android/Daily/tunein_release.apk" \
+            -Dold.app.path="/Users/serviceaccount/Apps/oldBuilds/Android/tunein_release.apk" \
+            -Dappium.start.retry.number=5 \
+            -Dsuite=release \
+            -Dappium.use.prelaunched.server=false \
+            -Drp.enable=true \
+            -Drp.launch=ANDROID_Release_Test_Run \
+            -Delement.visible.timeout.seconds=10 \
+            -Delement.wait.long.timeout.seconds=40 \
+            -Dpage.ready.timeout.seconds=25 \
+            -Delement.wait.very.short.timeout.seconds=6 \
+            -Dappium.headless.mode=true \
+            -Dappium.log.level=info \
+            -Delement.wait.medium.timeout.seconds=20 \
+            -Dcustom.wait.timeout.milliseconds=20000 \
+            -Delement.wait.very.short.timeout.seconds=5 \
+            -Dnew.command.timeout.seconds=930 \
+            -Dtestrail.authorization.token="${{env.TEST_RAIL_TOKEN}}" \
+            -Dpost.testrail.result=true \
+            -Dtestrail.project.id=13 \
+            -Dstore.test.plan.url.in.file=true \
+            -Dskip.tests.without.testcase=true \
+            -Duse.existing.plan.id=false \
+            -Dbuild.name="${{ github.event.inputs.build_version }}" \
+            -Dtestrail.suite.ids="55,41,53" \
+            -Dwait.for.server=true \
+            -Drp.token=${{env.REPORT_PORTAL_TOKEN}} \
+            --info --configure-on-demand
+      - name: Wait for results
+        uses: juliangruber/sleep-action@v1
+        with:
+          time: 15s
+      - name: Get Report Portal URL
+        if: always()
+        id: report_portal_url
+        run: echo "RP_URL=$(cat android_report_portal_launch_id.txt)" >> $GITHUB_OUTPUT
+      - name: Get Test Rail URL
+        if: always()
+        id: test_rail_url
+        run: echo "TEST_RAIL_URL=$(cat android_testrail_test_plan.txt)" >> $GITHUB_OUTPUT
+      - name: Get Test Plan ID
+        if: always()
+        id: test_plan_id
+        run: echo "TEST_PLAN_ID=$( echo ${{steps.test_rail_url.outputs.TEST_RAIL_URL}} | sed 's/.*view//'| cut -d '/' -f2-)" >> $GITHUB_OUTPUT
+      - name: Get Passed Number of tests
+        if: always()
+        id: tests_passed_number
+        run: |
+          echo "TESTS_PASSED_NUMBER=$(curl -X GET "https://tunein.testrail.io/index.php?/api/v2/get_plan/${{steps.test_plan_id.outputs.TEST_PLAN_ID}}" -u "web.automation@tunien.com:${{env.TEST_RAIL_TOKEN}}" -H "accept: application/json"  | jq -r '.passed_count')" >> $GITHUB_OUTPUT
+      - name: Get Failed Number of tests
+        if: always()
+        id: tests_failed_number
+        run: |
+          echo "TESTS_FAILED_NUMBER=$(curl -X GET "https://tunein.testrail.io/index.php?/api/v2/get_plan/${{steps.test_plan_id.outputs.TEST_PLAN_ID}}" -u "web.automation@tunien.com:${{env.TEST_RAIL_TOKEN}}" -H "accept: application/json"  | jq -r '.failed_count')" >> $GITHUB_OUTPUT
+      - name: Get Skipped Number of tests
+        if: always()
+        id: tests_skipped_number
+        run: |
+          echo "TESTS_SKIPPED_NUMBER=$(curl -X GET "https://tunein.testrail.io/index.php?/api/v2/get_plan/${{steps.test_plan_id.outputs.TEST_PLAN_ID}}" -u "web.automation@tunien.com:${{env.TEST_RAIL_TOKEN}}" -H "accept: application/json"  | jq -r '.untested_count')" >> $GITHUB_OUTPUT
+      - name: Get Total Number of tests
+        if: always()
+        id: tests_total_number
+        run: |
+          echo "TESTS_TOTAL_NUMBER=$((${{steps.tests_skipped_number.outputs.TESTS_SKIPPED_NUMBER}}+${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}}+${{steps.tests_passed_number.outputs.TESTS_PASSED_NUMBER}}))" >> $GITHUB_OUTPUT
+      - name: Define if run is failed
+        if: always()
+        id: is_run_failed
+        run: echo "FAILED_CODE=$( if (( ${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}} == null )); then echo '0'; elif (( ${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}} > 0 )); then echo '1'; else echo '0'; fi)" >> $GITHUB_OUTPUT
+      - name: Set block color
+        if: always()
+        id: color
+        run: echo "COLOR=$( if (( ${{steps.is_run_failed.outputs.FAILED_CODE }} == 1)); then echo 'danger'; else echo 'good'; fi)" >> $GITHUB_OUTPUT
+      - name: Define message
+        if: always()
+        id: title
+        run: |
+          echo "RESULT_MESSAGE=$( if (( ${{steps.is_run_failed.outputs.FAILED_CODE }} == 1)); then echo ':octagonal_sign: *Testing Failed*'; else echo ':white_check_mark: *Testing Passed*'; fi)" >> $GITHUB_OUTPUT
+      - name: Send GitHub Action trigger data to Slack workflow
+        if: always()
+        id: slack
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          channel-id: 'C01RZC085C1'
+          payload: |
+            {
+            "attachments": 
+            [
+             { "mrkdwn_in": [ "text","pretext"],
+             "pretext": ":robot_face: Android Release Test Results \n ${{steps.title.outputs.RESULT_MESSAGE}}",
+             "color": "${{steps.color.outputs.COLOR}}",
+             "title": " ",
+             "fields": [
+                         {
+                          "title": "*Total number:*",
+                          "value": "${{steps.tests_total_number.outputs.TESTS_TOTAL_NUMBER}}",
+                          "short": true
+                         },
+                         {
+                          "title": "*Passed:*",
+                          "value": "${{steps.tests_passed_number.outputs.TESTS_PASSED_NUMBER}}",
+                          "short": true
+                         },
+                         {
+                          "title": "*Failed:*",
+                          "value": "${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}}",
+                          "short": true
+                         },
+                         {
+                          "title": "*Skipped:*",
+                          "value": "${{steps.tests_skipped_number.outputs.TESTS_SKIPPED_NUMBER}}",
+                          "short": true
+                         }
+                        ],
+               "actions": [
+                          {
+                            "name": "reportportal",
+                            "text": "ReportPortal",
+                            "type": "button",
+                            "url": "${{steps.report_portal_url.outputs.RP_URL}}"
+                          },
+                          {
+                            "name": "appurl",
+                            "text": "Download App",
+                            "type": "button",
+                            "url": "${{steps.bitrise-build.outputs.PUBLIC_APP_URL}}"
+                          },
+                          {
+                            "name": "testrail",
+                            "text": "TestRail",
+                            "type": "button",
+                            "url": "${{steps.test_rail_url.outputs.TEST_RAIL_URL}}"
+                          }
+                          ]
+                     }
+              ]
+             }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      - name: Delete emulators
+        if: always()
+        run: |
+          /Users/serviceaccount/Library/Android/sdk/cmdline-tools/latest/bin/avdmanager delete avd -n ${{steps.run_emulator.outputs.EMULATOR_FIRST_NAME}}
+          adb -s ${{steps.run_emulator.outputs.EMULATOR_FIRST_UDID}}  emu kill
+          /Users/serviceaccount/Library/Android/sdk/cmdline-tools/latest/bin/avdmanager delete avd -n ${{steps.run_emulator.outputs.EMULATOR_SECOND_NAME}}
+          adb -s ${{steps.run_emulator.outputs.EMULATOR_SECOND_UDID}}  emu kill
+          /Users/serviceaccount/Library/Android/sdk/cmdline-tools/latest/bin/avdmanager delete avd -n ${{steps.run_emulator.outputs.EMULATOR_THIRD_NAME}}
+          adb -s ${{steps.run_emulator.outputs.EMULATOR_THIRD_UDID}}  emu kill
+          /Users/serviceaccount/Library/Android/sdk/cmdline-tools/latest/bin/avdmanager delete avd -n ${{steps.run_emulator.outputs.EMULATOR_FOURTH_NAME}}
+          adb -s ${{steps.run_emulator.outputs.EMULATOR_FOURTH_UDID}}  emu kill

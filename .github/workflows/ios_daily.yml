@@ -1,0 +1,211 @@
+name: iOS Daily Run
+on:
+  schedule:
+   - cron:  '30 4 * * *'
+  workflow_dispatch:
+env:
+  BITRISE_IOS_APP_SLUG: 'd21d6fcf2a1cfbcf'
+  BITRISE_API_TOKEN: ${{ secrets.BITRISE_API_TOKEN }}
+  REPORT_PORTAL_TOKEN: ${{ secrets.REPORT_PORTAL_TOKEN }}
+  FIRST_APPIUM_SERVER_PORT: 4950
+  SECOND_APPIUM_SERVER_PORT: 4952
+  THIRD_APPIUM_SERVER_PORT: 4954
+  FOURTH_APPIUM_SERVER_PORT: 4956
+  BITRISE_IOS_BUILD_SLUG_EXTRA: '12813bd2-cfef-431b-a3a7-5af8f6caceb6'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run_daily_tests:
+    runs-on: pr_runner
+    if: always()
+    timeout-minutes: 600
+    name: Run iOS Daily Tests.
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Check and kill Appium server from previous session
+        run: |
+          if lsof -ti:${{env.FIRST_APPIUM_SERVER_PORT}} > /tmp/test.txt; then echo 'Server will be killed' && kill $(lsof -ti:${{env.FIRST_APPIUM_SERVER_PORT}}); else echo 'Server is not run'; fi
+          if lsof -ti:${{env.SECOND_APPIUM_SERVER_PORT}} > /tmp/test.txt; then echo 'Server will be killed' && kill $(lsof -ti:${{env.SECOND_APPIUM_SERVER_PORT}}); else echo 'Server is not run'; fi
+          if lsof -ti:${{env.THIRD_APPIUM_SERVER_PORT}} > /tmp/test.txt; then echo 'Server will be killed' && kill $(lsof -ti:${{env.THIRD_APPIUM_SERVER_PORT}}); else echo 'Server is not run'; fi
+          if lsof -ti:${{env.FOURTH_APPIUM_SERVER_PORT}} > /tmp/test.txt; then echo 'Server will be killed' && kill $(lsof -ti:${{env.FOURTH_APPIUM_SERVER_PORT}}); else echo 'Server is not run'; fi      
+      - name: Run simulators
+        id: run-simulator
+        run: |
+           UDID_FIRST=$(echo $(xcrun simctl create iPhone_14_Daily com.apple.CoreSimulator.SimDeviceType.iPhone-14 com.apple.CoreSimulator.SimRuntime.iOS-16-2))
+           echo "DEVICE_UDID_FIRST=$UDID_FIRST" >> $GITHUB_OUTPUT
+           RUNNER_TRACKING_ID="" && xcrun simctl bootstatus $UDID_FIRST -b
+           
+           UDID_SECOND=$(echo $(xcrun simctl create iPhone_14_Plus_Daily com.apple.CoreSimulator.SimDeviceType.iPhone-14-Plus com.apple.CoreSimulator.SimRuntime.iOS-16-2))
+           echo "DEVICE_UDID_SECOND=$UDID_SECOND" >> $GITHUB_OUTPUT
+           RUNNER_TRACKING_ID="" && xcrun simctl bootstatus $UDID_SECOND -b
+           
+           UDID_THIRD=$(echo $(xcrun simctl create iPhone_14_Pro_Daily com.apple.CoreSimulator.SimDeviceType.iPhone-14-Pro com.apple.CoreSimulator.SimRuntime.iOS-16-2))
+           echo "DEVICE_UDID_THIRD=$UDID_THIRD" >> $GITHUB_OUTPUT
+           RUNNER_TRACKING_ID="" && xcrun simctl bootstatus $UDID_THIRD -b
+           
+           UDID_FOURTH=$(echo $(xcrun simctl create iPhone_14_Pro_Max_Daily com.apple.CoreSimulator.SimDeviceType.iPhone-14-Pro-Max com.apple.CoreSimulator.SimRuntime.iOS-16-2))
+           echo "DEVICE_UDID_FOURTH=$UDID_FOURTH" >> $GITHUB_OUTPUT
+           RUNNER_TRACKING_ID="" && xcrun simctl bootstatus $UDID_FOURTH -b
+      - name: Get Last Bitrise Build URL
+        id: bitrise-build
+        run: |
+          BITRISE_BUILD_SLUG=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_IOS_APP_SLUG}}/builds?sort_by=running_first&branch=develop&workflow=MAIN-ENTRY-POINT&status=1&limit=1" -H "accept: application/json" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" | jq -r '.data[] | .slug')
+          echo "BITRISE_BUILD_SLUG_OUTPUT=$BITRISE_BUILD_SLUG" >> $GITHUB_OUTPUT
+          echo $BITRISE_BUILD_SLUG
+          ARTIFACT_SLUG=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_IOS_APP_SLUG}}/builds/$BITRISE_BUILD_SLUG/artifacts" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data[]| select(.title=="testbundle.zip") | .slug' )
+          echo $ARTIFACT_SLUG
+          echo "APP_URL=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_IOS_APP_SLUG}}/builds/$BITRISE_BUILD_SLUG/artifacts/$ARTIFACT_SLUG" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data | .expiring_download_url' )" >> $GITHUB_OUTPUT
+          echo $APP_URL
+      - name: Download App file
+        run: |
+          curl "${{steps.bitrise-build.outputs.APP_URL}}" --output "/Users/serviceaccount/Apps/iOS/Daily/testbundle.zip"
+          RUNNER_TRACKING_ID="" &&  unzip -o /Users/serviceaccount/Apps/iOS/Daily/testbundle.zip -d /Users/serviceaccount/Apps/iOS/Daily
+          rm -r /Users/serviceaccount/Apps/iOS/Daily/TuneInRadio.app
+          RUNNER_TRACKING_ID="" && mv -f "/Users/serviceaccount/Apps/iOS/Daily/TuneIn Radio.app" "/Users/serviceaccount/Apps/iOS/Daily/TuneInRadio.app"
+      - name: Run Gradle Script
+        run: |
+          gradle clean runTest \
+              -Dorg.gradle.parallel=true \
+              -Dmobile.os=ios \
+              -Dstore.rp.url.in.file=true \
+              -Dorg.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home \
+              -Dplatform.version=16.2 \
+              -DstoreReportPortalUrlInFile=true \
+              -Dudid="${{steps.run-simulator.outputs.DEVICE_UDID_FIRST}},${{steps.run-simulator.outputs.DEVICE_UDID_SECOND}},${{steps.run-simulator.outputs.DEVICE_UDID_THIRD}},${{steps.run-simulator.outputs.DEVICE_UDID_FOURTH}}" \
+              -Dapp.path="/Users/serviceaccount/Apps/iOS/Daily/TuneInRadio.app" \
+              -Dold.app.path="/Users/serviceaccount/Apps/oldBuilds/iOS/TuneInRadio.app" \
+              -Dappium.start.retry.number=5 \
+              -Dsuite=daily \
+              -Dappium.use.prelaunched.server=false \
+              -Drp.enable=true \
+              -Dappium.headless.mode=true \
+              -Dappium.show.xcode.log=false \
+              -Dappium.use.prebuilt.wda=false \
+              -Drp.launch=iOS_Daily_Test_Run \
+              -Delement.wait.long.timeout.seconds=60 \
+              -Delement.wait.long.timeout.milliseconds=40000 \
+              -Delement.wait.extra.long.timeout.milliseconds=45000 \
+              -Delement.wait.short.timeout.seconds=5 \
+              -Dpage.ready.timeout.seconds=20 \
+              -Dtimeout.for.deeplink.milliseconds=15000 \
+              -Delement.visible.timeout.seconds=15 \
+              -Dvery.short.wait.timeout.milliseconds=3000 \
+              -Dnew.command.timeout.seconds=300 \
+              -Delement.wait.very.short.timeout.seconds=5 \
+              -Dappium.log.level=debug \
+              --info --configure-on-demand
+      - name: Wait for results
+        uses: juliangruber/sleep-action@v1
+        with:
+          time: 15s
+      - name: Get Report Portal URL
+        if: always()
+        id: report_portal_url
+        run: echo "RP_URL=$(cat ios_report_portal_launch_id.txt)" >> $GITHUB_OUTPUT
+      - name: Get Report Portal ID
+        if: always()
+        id: report_portal_id
+        run: echo "REPORT_PORTAL_ID=$( echo ${{steps.report_portal_url.outputs.RP_URL}} | sed 's/.*all//' | cut -d '/' -f2-)" >> $GITHUB_OUTPUT
+      - name: Get Total Number of tests
+        if: always()
+        id: tests_total_number
+        run: |
+          echo "TESTS_TOTAL_NUMBER=$(curl -X GET "https://tunein.reportportal.io/api/v1/mobile_automation/launch/uuid/${{steps.report_portal_id.outputs.REPORT_PORTAL_ID}}" -H "accept: application/json" -H "Authorization: bearer ${{env.REPORT_PORTAL_TOKEN}}" | jq -r ' .statistics | .executions | {total} | .total')" >> $GITHUB_OUTPUT
+      - name: Get Passed Number of tests
+        if: always()
+        id: tests_passed_number
+        run: |
+          echo "TESTS_PASSED_NUMBER=$(curl -X GET "https://tunein.reportportal.io/api/v1/mobile_automation/launch/uuid/${{steps.report_portal_id.outputs.REPORT_PORTAL_ID}}" -H "accept: application/json" -H "Authorization: bearer ${{env.REPORT_PORTAL_TOKEN}}" | jq -r ' .statistics | .executions | {passed} | .passed')" >> $GITHUB_OUTPUT
+      - name: Get Failed Number of tests
+        if: always()
+        id: tests_failed_number
+        run: |
+          echo "TESTS_FAILED_NUMBER=$(curl -X GET "https://tunein.reportportal.io/api/v1/mobile_automation/launch/uuid/${{steps.report_portal_id.outputs.REPORT_PORTAL_ID}}" -H "accept: application/json" -H "Authorization: bearer ${{env.REPORT_PORTAL_TOKEN}}" | jq -r ' .statistics | .executions | {failed} | .failed')" >> $GITHUB_OUTPUT
+      - name: Get Skipped Number of tests
+        if: always()
+        id: tests_skipped_number
+        run: |
+          echo "TESTS_SKIPPED_NUMBER=$(curl -X GET "https://tunein.reportportal.io/api/v1/mobile_automation/launch/uuid/${{steps.report_portal_id.outputs.REPORT_PORTAL_ID}}" -H "accept: application/json" -H "Authorization: bearer ${{env.REPORT_PORTAL_TOKEN}}" | jq -r ' .statistics | .executions | {skipped} | .skipped')" >> $GITHUB_OUTPUT
+      - name: Define if run is failed
+        if: always()
+        id: is_run_failed
+        run: echo "FAILED_CODE=$( if (( ${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}} == null )); then echo '0'; elif (( ${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}} > 0 )); then echo '1'; else echo '0'; fi)" >> $GITHUB_OUTPUT
+      - name: Set block color
+        if: always()
+        id: color
+        run: echo "COLOR=$( if (( ${{steps.is_run_failed.outputs.FAILED_CODE }} == 1)); then echo 'danger'; else echo 'good'; fi)" >> $GITHUB_OUTPUT
+      - name: Define message
+        if: always()
+        id: title
+        run: |
+          echo "RESULT_MESSAGE=$( if (( ${{steps.is_run_failed.outputs.FAILED_CODE }} == 1)); then echo ':octagonal_sign: *Testing Failed*'; else echo ':white_check_mark: *Testing Passed*'; fi)" >> $GITHUB_OUTPUT
+      - name: Send GitHub Action trigger data to Slack workflow
+        if: always()
+        id: slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: 'C050YTY2JSZ'
+          payload: |
+            {
+            "attachments":
+            [
+             { "mrkdwn_in": [ "text","pretext"],
+             "pretext": ":iphone: iOS Daily Test Results \n ${{steps.title.outputs.RESULT_MESSAGE}}",
+             "color": "${{steps.color.outputs.COLOR}}",
+             "title": " ",
+             "fields": [
+                         {
+                          "title": "*Total number:*",
+                          "value": "${{steps.tests_total_number.outputs.TESTS_TOTAL_NUMBER}}",
+                          "short": true
+                         },
+                         {
+                          "title": "*Passed:*",
+                          "value": "${{steps.tests_passed_number.outputs.TESTS_PASSED_NUMBER}}",
+                          "short": true
+                         },
+                         {
+                          "title": "*Failed:*",
+                          "value": "${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}}",
+                          "short": true
+                         },
+                         {
+                          "title": "*Skipped:*",
+                          "value": "${{steps.tests_skipped_number.outputs.TESTS_SKIPPED_NUMBER}}",
+                          "short": true
+                         }
+                        ],
+               "actions": [
+                          {
+                            "name": "reportportal",
+                            "text": "ReportPortal",
+                            "type": "button",
+                            "url": "${{steps.report_portal_url.outputs.RP_URL}}"
+                          },
+                          {
+                            "name": "appurl",
+                            "text": "Download App",
+                            "type": "button",
+                            "url": "https://app.bitrise.io/build/${{ steps.bitrise-build.outputs.BITRISE_BUILD_SLUG_OUTPUT }}?tab=artifacts"
+                          }
+                          ]
+                     }
+              ]
+             }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      - name: Kill all used emulators
+        if: always()
+        run: |
+            xcrun simctl delete ${{steps.run-simulator.outputs.DEVICE_UDID_FIRST}}
+            xcrun simctl delete ${{steps.run-simulator.outputs.DEVICE_UDID_SECOND}}
+            xcrun simctl delete ${{steps.run-simulator.outputs.DEVICE_UDID_THIRD}}
+            xcrun simctl delete ${{steps.run-simulator.outputs.DEVICE_UDID_FOURTH}}

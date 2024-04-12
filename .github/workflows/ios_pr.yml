@@ -1,0 +1,269 @@
+name: iOS PR Test Run
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+env:
+  BITRISE_IOS_APP_SLUG: 'd21d6fcf2a1cfbcf'
+  BITRISE_API_TOKEN: ${{ secrets.BITRISE_API_TOKEN }}
+  REPORT_PORTAL_TOKEN: ${{ secrets.REPORT_PORTAL_TOKEN }}
+  APPIUM_SERVER_PORT: 4906
+  BITRISE_IOS_BUILD_SLUG_EXTRA: '12813bd2-cfef-431b-a3a7-5af8f6caceb6'
+  PR_NUMBER: ${{ github.event.number }}
+  GIT_TOKEN: ${{ secrets.AUTOMATION_GIT_TOKEN }}
+  HEADSPIN_TOKEN: ${{ secrets.HEADSPIN_SHARED_DEVICES }}
+  IPA_BUILD_PATH: '/Users/serviceaccount/Apps/iOS/TuneInRadio.ipa'
+  APP_BUILD_PATH: '/Users/serviceaccount/Apps/iOS/TuneInRadio.app'
+  HEADSPIN_HOST: 'dev-us-sny-3.headspin.io:7007'
+  HEADSPIN_DEVICE_UDID: '00008110-0001743402A2401E'
+  BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
+  LAST_COMMIT: ${{ github.event.pull_request.head.sha }}
+  BITRISE_WORKFLOW: 'IOS_PR_REPORTING_TEST'
+  BITRISE_AUTOMATION_BASE_REPO_URL: 'git@github.com:tunein/mobile-automation-framework.git'
+  BITRISE_AUTOMATION_APP_SLUG: 'b2fb2397bbcc4600'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run_pr_test:
+    runs-on: pr_runner
+    if: always()
+    name: Run iOS PR test
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+            java-version: '17'
+            distribution: 'temurin'
+      - name: Parse PR data
+        id: parse_pr_data
+        run: |
+          echo "MAINTENANCE_LABEL=$(curl -X GET -H "Content-Type: application/vnd.github+json" -H "Authorization: token ${{env.GIT_TOKEN}}" "https://api.github.com/repos/tunein/mobile-automation-framework/issues/${{env.PR_NUMBER}}/labels" | jq '.[] | select(.name=="maintenance") | .name')" >> $GITHUB_OUTPUT
+          echo "REPORTING_LABEL=$(curl -X GET -H "Content-Type: application/vnd.github+json" -H "Authorization: token ${{env.GIT_TOKEN}}" "https://api.github.com/repos/tunein/mobile-automation-framework/issues/${{env.PR_NUMBER}}/labels" | jq '.[] | select(.name=="reporting") | .name')" >> $GITHUB_OUTPUT
+          echo "IOS_LABEL=$(curl -X GET -H "Content-Type: application/vnd.github+json" -H "Authorization: token ${{env.GIT_TOKEN}}" "https://api.github.com/repos/tunein/mobile-automation-framework/issues/${{env.PR_NUMBER}}/labels" | jq '.[] | select(.name=="iOS") | .name')" >> $GITHUB_OUTPUT
+          echo "REAL_DEVICE_LABEL=$(curl -X GET -H "Content-Type: application/vnd.github+json" -H "Authorization: token ${{env.GIT_TOKEN}}" "https://api.github.com/repos/tunein/mobile-automation-framework/issues/${{env.PR_NUMBER}}/labels" | jq '.[] | select(.name=="real_device") | .name')" >> $GITHUB_OUTPUT
+          echo "TESTS_LIST=$(curl -X GET -H "Content-Type: application/vnd.github+json" -H "Authorization: token ${{env.GIT_TOKEN}}" "https://api.github.com/repos/tunein/mobile-automation-framework/issues/${{env.PR_NUMBER}}" | jq -r '.body' | grep '```' | tr -d '```' | tr -d '\n' | tr -d '[:space:]' )" >> $GITHUB_OUTPUT
+      - name: Check if we should run test
+        id: should_run
+        run: |
+          echo "List of tests ${{steps.parse_pr_data.outputs.TESTS_LIST}} in pr"
+          if [ ! -z ${{steps.parse_pr_data.outputs.MAINTENANCE_LABEL}} ] || [ -z ${{steps.parse_pr_data.outputs.IOS_LABEL}} ];
+          then
+            echo "Skip iOS test";
+            echo "RUN_UI_TEST=false" >> $GITHUB_OUTPUT;
+          elif [ ${{steps.parse_pr_data.outputs.TESTS_LIST}} == "Testnames" ] && [ ! -z ${{steps.parse_pr_data.outputs.IOS_LABEL}} ];
+          then
+            echo "Test name is absent in PR description";
+            exit 1;
+          elif [ ! -z ${{steps.parse_pr_data.outputs.REPORTING_LABEL}} ] 
+          then
+            echo "Run iOS reporting test";
+            echo "RUN_UI_TEST=false" >> $GITHUB_OUTPUT;
+            echo "RUN_REPORTING_TEST=true" >> $GITHUB_OUTPUT;
+          else  
+            echo "Run iOS UI test";
+            echo "RUN_UI_TEST=true" >> $GITHUB_OUTPUT;
+            echo "RUN_REPORTING_TEST=false" >> $GITHUB_OUTPUT;
+          fi
+      - name: Simulator or Real device
+        if: ${{ steps.should_run.outputs.RUN_UI_TEST == 'true' }}
+        id: check_device_type
+        run: |
+          if [ ! -z ${{steps.parse_pr_data.outputs.REAL_DEVICE_LABEL}} ];
+          then
+            echo "Test on real devices";
+            echo "RUN_ON_REAL_DEVICES=true" >> $GITHUB_OUTPUT;
+          else  
+            echo "Run on simulator";
+            echo "RUN_ON_REAL_DEVICES=false" >> $GITHUB_OUTPUT;
+          fi
+      - name: Check and kill Appium server from previous session
+        if: ${{ steps.should_run.outputs.RUN_UI_TEST  == 'true' && steps.check_device_type.outputs.RUN_ON_REAL_DEVICES  == 'false' }}
+        id: prepare_port
+        run: |
+          PORT=$(shuf -i 6200-6310 -n1)
+          echo $PORT
+          echo "APPIUM_PORT=$PORT" >> $GITHUB_OUTPUT;
+          if lsof -ti:$PORT > /tmp/test.txt; then echo 'Server will be killed' && kill $(lsof -ti:$PORT); else echo 'Server is not run'; fi
+      - name: Run simulator
+        if: ${{ steps.should_run.outputs.RUN_UI_TEST  == 'true' && steps.check_device_type.outputs.RUN_ON_REAL_DEVICES  == 'false' }}
+        id: run-simulator
+        run: |
+          UDID=$(echo $(xcrun simctl create iPhone_14_PR com.apple.CoreSimulator.SimDeviceType.iPhone-14 com.apple.CoreSimulator.SimRuntime.iOS-16-2))
+          echo "DEVICE_UDID=$UDID" >> $GITHUB_OUTPUT
+          RUNNER_TRACKING_ID="" && xcrun simctl bootstatus $UDID -b
+      - name: Get Last Bitrise APP Build URL
+        if: ${{ steps.should_run.outputs.RUN_UI_TEST  == 'true'  }}
+        id: bitrise-build_app
+        run: |
+          BITRISE_BUILD_SLUG=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_IOS_APP_SLUG}}/builds?sort_by=running_first&branch=develop&workflow=MAIN-ENTRY-POINT&status=1&limit=1" -H "accept: application/json" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" | jq -r '.data[] | .slug')
+          echo $BITRISE_BUILD_SLUG
+          ARTIFACT_SLUG=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_IOS_APP_SLUG}}/builds/$BITRISE_BUILD_SLUG/artifacts" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data[]| select(.title=="testbundle.zip") | .slug')
+          echo $ARTIFACT_SLUG
+          echo "APP_URL=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_IOS_APP_SLUG}}/builds/$BITRISE_BUILD_SLUG/artifacts/$ARTIFACT_SLUG" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data | .expiring_download_url' )" >> $GITHUB_OUTPUT
+          echo $APP_URL
+      - name: Get latest Bitrise .ipa build URL
+        if: ${{ steps.should_run.outputs.RUN_UI_TEST  == 'true' }}
+        id: bitrise-build_ipa
+        run: |
+          BITRISE_BUILD_SLUG=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_IOS_APP_SLUG}}/builds?sort_by=running_first&branch=develop&workflow=MAIN-ENTRY-POINT&status=1&limit=1" -H "accept: application/json" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" | jq -r '.data[] | .slug')
+          echo $BITRISE_BUILD_SLUG
+          ARTIFACT_SLUG=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_IOS_APP_SLUG}}/builds/$BITRISE_BUILD_SLUG/artifacts" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data[]| select(.title=="TuneIn Radio.ipa") | .slug')
+          echo $ARTIFACT_SLUG
+          echo "APP_URL=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_IOS_APP_SLUG}}/builds/$BITRISE_BUILD_SLUG/artifacts/$ARTIFACT_SLUG" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data | .expiring_download_url' )" >> $GITHUB_OUTPUT
+          echo $APP_URL
+      - name: Download app file
+        if: ${{ steps.should_run.outputs.RUN_UI_TEST  == 'true'}}
+        run: |
+          curl "${{steps.bitrise-build_app.outputs.APP_URL}}" --output "/Users/serviceaccount/Apps/iOS/testbundle.zip"
+          RUNNER_TRACKING_ID="" &&  unzip -o /Users/serviceaccount/Apps/iOS/testbundle.zip -d /Users/serviceaccount/Apps/iOS
+          rm -r ${{env.APP_BUILD_PATH}}
+          RUNNER_TRACKING_ID="" && mv -f "/Users/serviceaccount/Apps/iOS/TuneIn Radio.app" "${{env.APP_BUILD_PATH}}"
+      - name: Download ipa file
+        if: ${{ steps.should_run.outputs.RUN_UI_TEST  == 'true'}}
+        run: |
+          curl "${{steps.bitrise-build_ipa.outputs.APP_URL}}" --output "/Users/serviceaccount/Apps/iOS/TuneIn Radio.ipa"          
+          rm -r ${{env.IPA_BUILD_PATH}}
+          RUNNER_TRACKING_ID="" && mv -f "/Users/serviceaccount/Apps/iOS/TuneIn Radio.ipa" "${{env.IPA_BUILD_PATH}}"
+      - name: Run UI Test
+        if: ${{ steps.should_run.outputs.RUN_UI_TEST  == 'true' }}
+        run: |
+          gradle clean runTest \
+                -Dmobile.os=ios \
+                -Dappium.port=${{steps.prepare_port.outputs.APPIUM_PORT || 6310 }} \
+                -Drp.description="PR: https://github.com/tunein/mobile-automation-framework/pull/${{env.PR_NUMBER}}" \
+                -Dpr.tests="${{steps.parse_pr_data.outputs.TESTS_LIST}}" \
+                -Dstore.rp.url.in.file=true \
+                -Dorg.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home \
+                -Dplatform.version=16.2 \
+                -Dudid="${{ steps.run-simulator.outputs.DEVICE_UDID || env.HEADSPIN_DEVICE_UDID }}" \
+                -Dapp.path="${{env.APP_BUILD_PATH}}" \
+                -Dold.app.path="/Users/serviceaccount/Apps/oldBuilds/iOS/TuneInRadio.app" \
+                -Dheadspin.app.path="${{env.IPA_BUILD_PATH}}" \
+                -Dappium.real.device.uninstall.tunein.app=true \
+                -Dappium.real.device.install.tunein.app=true \
+                -Dtest.on.real.devices=${{ steps.check_device_type.outputs.RUN_ON_REAL_DEVICES }} \
+                -Dappium.start.retry.number=5 \
+                -Dsuite=for_pr_review \
+                -Dappium.use.prelaunched.server=false \
+                -Drp.enable=true \
+                -Dappium.headless.mode=true \
+                -Dappium.show.xcode.log=false \
+                -Dappium.use.prebuilt.wda=false \
+                -Drp.launch=IOS_PR_REVIEW \
+                -Delement.wait.long.timeout.seconds=60 \
+                -Delement.wait.long.timeout.milliseconds=40000 \
+                -Delement.wait.extra.long.timeout.milliseconds=45000 \
+                -Delement.wait.short.timeout.seconds=5 \
+                -Dpage.ready.timeout.seconds=20 \
+                -Dtimeout.for.deeplink.milliseconds=15000 \
+                -Delement.visible.timeout.seconds=15 \
+                -Dvery.short.wait.timeout.milliseconds=3000 \
+                -Dnew.command.timeout.seconds=900 \
+                -Delement.wait.very.short.timeout.seconds=5 \
+                -Dappium.log.level=debug \
+                -Dheadspin.android.host="${{ env.HEADSPIN_HOST }}" \
+                -Dappium.stream.headspin.token="${{ env.HEADSPIN_TOKEN }}" \
+                -Dnew.command.timeout.seconds=120 \
+                --info --configure-on-demand
+      - name: Trigger Reporting Tests in Bitrise
+        if: ${{ steps.should_run.outputs.RUN_REPORTING_TEST  == 'true' }}
+        run: |
+          curl -X POST \
+          -H "Authorization: ${{env.BITRISE_API_TOKEN}}" \
+          "https://app.bitrise.io/app/${{env.BITRISE_AUTOMATION_APP_SLUG}}/build/start.json" \
+          -H "accept: application/json" \
+          -H "Content-Type: application/json" -d \
+            '{
+              "build_params": {
+              "branch": "${{env.BRANCH_NAME}}",
+              "workflow_id": "${{env.BITRISE_WORKFLOW}}",
+              "commit_message": "branch: ${{env.BRANCH_NAME}} commit: ${{env.LAST_COMMIT}}",
+              "environments": [
+                  {
+                       "mapped_to": "BITRISE_AUTOMATION_BASE_REPO_URL",
+                       "value": "${{env.BITRISE_AUTOMATION_BASE_REPO_URL}}",
+                       "is_expand": true
+                  },
+                  {
+                       "mapped_to": "BITRISE_AUTOMATION_GIT_COMMIT",
+                       "value": "${{env.LAST_COMMIT}}",
+                       "is_expand": true
+                  },
+                  {
+                       "mapped_to": "BITRISE_AUTOMATION_GIT_BRANCH",
+                        "value": "${{env.BRANCH_NAME}}",
+                        "is_expand": true
+                  },
+                  {
+                    "mapped_to": "BITRISE_AUTOMATION_PULL_REQUEST_REPOSITORY_URL",
+                    "value": "https://github.com/tunein/mobile-automation-framework/pull/${{env.PR_NUMBER}}",
+                    "is_expand": true
+                  },
+                  {
+                    "mapped_to": "PR_NUMBER",
+                    "value": "${{env.PR_NUMBER}}",
+                    "is_expand": true
+                  },
+                  {
+                    "mapped_to": "TESTS_LIST",
+                    "value": "${{steps.parse_pr_data.outputs.TESTS_LIST}}",
+                    "is_expand": true
+                  }
+                ]
+              },
+              "hook_info": {
+                "type": "bitrise"
+               }
+              }'
+      - name: Get Bitrise Reporting Test Build Slug
+        if: ${{ steps.should_run.outputs.RUN_REPORTING_TEST  == 'true' }}
+        id: bitrise_build_slug
+        run: |
+          sleep 30
+          BITRISE_BUILD_SLUG=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_AUTOMATION_APP_SLUG}}/builds?sort_by=running_first&workflow=${{env.BITRISE_WORKFLOW}}&branch=${{env.BRANCH_NAME}}&limit=1" -H "accept: application/json" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" | jq -r '.data[] | .slug')
+          echo $BITRISE_BUILD_SLUG
+          echo "BITRISE_AUTOMATION_BUILD_SLUG=$BITRISE_BUILD_SLUG" >> $GITHUB_OUTPUT;
+      - name: Wait for Reporting Test
+        if: ${{ steps.should_run.outputs.RUN_REPORTING_TEST  == 'true' }}
+        id: wait_build
+        run: |
+          CURRENT_TIME=$(date +%s)
+          BUILD_STATUS=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_AUTOMATION_APP_SLUG}}/builds/${{steps.bitrise_build_slug.outputs.BITRISE_AUTOMATION_BUILD_SLUG}}" -H "Authorization: ${BITRISE_API_TOKEN}" -H "accept: application/json" | jq -r '.data | .status' )
+          echo $BUILD_STATUS 
+          while [ $BUILD_STATUS != 3 ] && [ $BUILD_STATUS != 1 ] && [ $BUILD_STATUS != 2 ] 
+            do 
+              sleep 120
+              CURRENT_TIME_IN_LOOP=$(date +%s)
+              if (( ($CURRENT_TIME_IN_LOOP - $CURRENT_TIME) > 3000 ));
+                then
+                 echo "Close github action as building process takes more than 50 min";
+                 exit 1;
+              else 
+                 echo "Build is not ready yet, lets wait extra 2 minutes";
+                 BUILD_STATUS=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_AUTOMATION_APP_SLUG}}/builds/${{steps.bitrise_build_slug.outputs.BITRISE_AUTOMATION_BUILD_SLUG}}" -H "Authorization: ${BITRISE_API_TOKEN}" -H "accept: application/json" | jq -r '.data | .status' )
+                 echo $BUILD_STATUS 
+              fi
+          done
+             if [ $BUILD_STATUS == 1 ]
+              then
+               echo "Build is ready.";
+              else
+               echo "Bitrise build is failed or aborted";
+               exit 1;
+              fi
+      - name: Get Report Portal URL
+        if: ${{ always() && steps.should_run.outputs.RUN_UI_TEST == 'true' }}
+        id: report_portal_url
+        run: echo "RP_URL=$(cat ios_report_portal_launch_id.txt)" >> $GITHUB_OUTPUT
+      - name: Post Report Portal Results
+        if: ${{ always() && steps.should_run.outputs.RUN_UI_TEST == 'true' }}
+        run: |
+          curl -X POST https://api.github.com/repos/tunein/mobile-automation-framework/issues/${{env.PR_NUMBER}}/comments  -d '{"body":"iOS Report Portal results: ${{steps.report_portal_url.outputs.RP_URL}}"}' -H "Content-Type: application/vnd.github+json" -H "Authorization: token ${{env.GIT_TOKEN}}"
+      - name: Kill all used emulators
+        if: ${{ always() && steps.should_run.outputs.RUN_UI_TEST == 'true' && steps.check_device_type.outputs.RUN_ON_REAL_DEVICES == 'false' }}
+        run: |
+          xcrun simctl delete ${{steps.run-simulator.outputs.DEVICE_UDID}}

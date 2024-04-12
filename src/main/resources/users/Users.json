@@ -1,0 +1,223 @@
+[
+  {
+    "userGeneral": {
+      "email": "autotest.tunein4@gmail.com",
+      "password": "Tunein12",
+      "profileName": "autotest4",
+      "username": "autotesttunein4",
+      "userGender":"Male",
+      "userBirthYear": 1989,
+      "numberOfFavorites": 3,
+      "numberOfRecents": 0,
+      "isPremium" : false
+    }
+  },
+  {
+    "userLoginTest": {
+      "email": "auto.tuneinqa13@tunein.com",
+      "password": "Tunein123",
+      "profileName": "Autotest_User",
+      "username": "autotuneinqa13",
+      "userGender":"Male",
+      "userBirthYear": 1989,
+      "numberOfFavorites": 3,
+      "numberOfRecents": 3,
+      "isPremium" : false
+    }
+  },
+  {
+    "userRecents": {
+      "email": "autotest.tunein2@gmail.com",
+      "password": "Tunein12",
+      "profileName": "autotest2",
+      "username": "autotesttunein2",
+      "userGender":"Male",
+      "userBirthYear": 1989,
+      "numberOfFavorites": 0,
+      "numberOfRecents": 5,
+      "isPremium" : false
+    }
+  },
+  {
+    "userFavoriteTest": {
+      "email": "autotest.tunein3@gmail.com",
+      "password": "Tunein12",
+      "profileName": "autotest3",
+      "username": "autotesttunein3",
+      "userGender":"Male",
+      "userBirthYear": 1989,
+      "numberOfFavorites": 3,
+      "numberOfRecents": 3,
+      "isPremium" : false
+    }
+  },
+  {
+    "userCarmode": {
+      "email": "tunein.autotest+5@gmail.com",
+      "password": "Tunein12",
+      "profileName": "autotest5",
+      "username": "tuneinautotest5",
+      "userGender":"Male",
+      "userBirthYear": 1989,
+      "numberOfFavorites": 2,
+      "numberOfRecents": 0,
+      "isPremium" : false
+    }
+  },
+  {
+    "userPremium": {
+      "email": "automation.premium@tunein.com",
+      "password": "Tunein123",
+      "profileName": "Automation Premium",
+      "username": "automationpremium",
+      "userGender": "Male",
+      "userBirthYear": 1990,
+      "numberOfFavorites": 0,
+      "numberOfRecents": 0,
+      "isPremium" : true
+    }
+  },
+  {
+    "userFacebook": {
+      "email": "tuneinqacsc2@gmail.com",
+      "password": "Tunein123",
+      "profileName": "Tunein Automation",
+      "username": "tuneinqacsc2",
+      "userGender":"Male",
+      "userBirthYear": 1989,
+      "numberOfFavorites": 1,
+      "numberOfRecents": 2,
+      "isPremium" : false
+    }
+  },
+  {
+    "userGoogle": {
+      "email": "tunein.autotest@gmail.com",
+      "password": "TuneAuto12345&",
+      "profileName": "tunein autotest",
+      "username": "tuneinautotest",
+      "userGender":"Male",
+      "userBirthYear": 1989,
+      "numberOfFavorites": 3,
+      "numberOfRecents": 5,
+      "isPremium" : false
+    }
+  },
+  {
+    "userSmartLock": {
+      "email": "tunein.newsmartlock2@gmail.com",
+      "password": "TuneAuto12345&",
+      "profileName": "tune test",
+      "username": "tuneinnewsmartlock2",
+      "userGender":"Male",
+      "userBirthYear": 1989,
+      "numberOfFavorites": 3,
+      "numberOfRecents": 5,
+      "isPremium" : false
+    }
+  },
+  {
+    "userWithoutFavorites": {
+      "email": "autotest11@tunein.com",
+      "password": "Tunein123",
+      "profileName": "Without_Favorites",
+      "username": "autotest11",
+      "userGender":"Male",
+      "userBirthYear": 2000,
+      "numberOfFavorites": 0,
+      "numberOfRecents": 12,
+      "isPremium" : false
+    }
+  },
+  {
+    "userWithFavorites": {
+      "email": "favorites@tunein.com",
+      "password": "Tunein123",
+      "profileName": "favorites_test",
+      "username": "favorites7291",
+      "userGender":"Male",
+      "userBirthYear": 1985,
+      "numberOfFavorites": 16,
+      "numberOfRecents": 23,
+      "isPremium" : false
+    }
+  },
+  {
+    "userWithTeamsFavorited": {
+      "email": "tunein.automation.yourgames@gmail.com",
+      "password": "Tunein123",
+      "profileName": "yourgames_test",
+      "username": "Testqa Tunein",
+      "userGender": "Prefer Not to Say",
+      "userBirthYear": 1990,
+      "numberOfFavorites": 50,
+      "numberOfRecents": 0,
+      "isPremium" : false
+    }
+  },
+  {
+    "userWithoutRecents": {
+      "email": "tunein.norecents@gmail.com",
+      "password": "Tunein123",
+      "profileName": "NoRecents User",
+      "username": "tuneinnorecents",
+      "userGender": "Male",
+      "userBirthYear": 1990,
+      "numberOfFavorites": 0,
+      "numberOfRecents": 0,
+      "isPremium" : false
+    }
+  },
+  {
+    "userStationWithRecents": {
+      "email": "tunein.recentstation@gmail.com",
+      "password": "Tunein123",
+      "profileName": "tuneinrecentstation",
+      "username": "tuneinrecentstation",
+      "userGender": "Female",
+      "userBirthYear": 1988,
+      "numberOfFavorites": 0,
+      "numberOfRecents": 3,
+      "isPremium" : false
+    }
+  },
+  {
+    "userWithManyFavorites": {
+      "email": "tuneinqats12@gmail.com",
+      "password": "Tunein123",
+      "profileName": "chew_c",
+      "username": "tuneinqats12",
+      "userGender":"Male",
+      "userBirthYear": 1989,
+      "numberOfFavorites": 307,
+      "numberOfRecents": 100,
+      "isPremium" : false
+    }
+  },
+  {
+    "userWithPremiumRecents": {
+      "email": "automation_premium@tunein.com",
+      "password": "Tunein123",
+      "profileName": "automationpremium",
+      "username": "automationpremium8744",
+      "userGender": "Male",
+      "userBirthYear": 1985,
+      "numberOfFavorites": 0,
+      "numberOfRecents": 2,
+      "isPremium" : true
+    }
+  },
+  {
+    "loginUserTest": {
+      "email": "auto.tunein123@gmail.com",
+      "password": "Tunein123",
+      "profileName": "autotunein123",
+      "username": "autotunein123",
+      "userGender":"Prefer not to say",
+      "userBirthYear": 1992,
+      "numberOfFavorites": 3,
+      "numberOfRecents": 3,
+      "isPremium" : false
+    }
+  }
+]

@@ -1,0 +1,2 @@
+effectiveurl,media_type,station_name,station_no,stream_no,hours,player_url,exception_string,url_tune_ashx_err_msg,bitrate_tune_ashx,media_type_tune_ashx
+https://sonic01.instainternet.com/8306/stream,MP3,WICE/Q95FM,89626,162773325,,https://tunein.com/embed/player/s89626/?testStreamId=e162773325&autoplay=true,,,128,mp3

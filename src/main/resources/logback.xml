@@ -1,0 +1,19 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+<appender name="ReportPortalAppender" class="com.epam.reportportal.logback.appender.ReportPortalAppender">
+    <filter class="com.tunein.mobile.utils.LogbackLogFilter" />
+    <encoder>
+        <pattern>%d{HH:mm:ss.SSS} [%t] %-5level - %msg%n</pattern>
+    </encoder>
+</appender>
+<root level="info">
+<appender-ref ref="ReportPortalAppender" />
+</root>
+</configuration>

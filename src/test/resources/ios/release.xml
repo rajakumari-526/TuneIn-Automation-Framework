@@ -1,0 +1,46 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TuneIn iOS Daily Tests" parallel="tests" thread-count="4" verbose="1" preserve-order="true">
+    <test name="FirstDevice">
+        <parameter name="appiumPort" value="4950"/>
+        <classes>
+            <class name="com.tunein.mobile.tests.ios.homepage.IosHomePageTest"/>
+            <class name="com.tunein.mobile.tests.ios.library.IosLibraryTest"/>
+            <class name="com.tunein.mobile.tests.ios.subscription.IosSubscriptionTest"/>
+        </classes>
+    </test>
+    <test name="SecondDevice">
+        <parameter name="appiumPort" value="4952"/>
+        <classes>
+            <class name="com.tunein.mobile.tests.ios.contentprofile.IosContentProfileTest"/>
+            <class name="com.tunein.mobile.tests.ios.deeplinks.IosDeepLinksTest"/>
+            <class name="com.tunein.mobile.tests.ios.navigation.IosNavigationTest"/>
+            <class name="com.tunein.mobile.tests.ios.userprofile.IosUserProfileTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosCarModeTest"/>
+        </classes>
+    </test>
+    <test name="ThirdDevice">
+        <parameter name="appiumPort" value="4954"/>
+        <classes>
+            <class name="com.tunein.mobile.tests.ios.upsell.IosUpsellTest"/>
+            <class name="com.tunein.mobile.tests.ios.interruptions.IosInterruptionsTest"/>
+            <class name="com.tunein.mobile.tests.ios.authentication.IosSignUpTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingMetaDataTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingButtonFunctionalityTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosMiniPlayerTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingGeneralTest"/>
+        </classes>
+    </test>
+    <test name="FourthDevice">
+        <parameter name="appiumPort" value="4956"/>
+        <classes>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingScrollableTest"/>
+            <class name="com.tunein.mobile.tests.ios.authentication.IosSignInSignOutTest"/>
+            <class name="com.tunein.mobile.tests.ios.browsies.IosBrowsiesTest"/>
+            <class name="com.tunein.mobile.tests.ios.upgrade.IosUpgradeTest"/>
+            <class name="com.tunein.mobile.tests.ios.search.IosSearchTest"/>
+            <class name="com.tunein.mobile.tests.ios.explorer.IosExplorerPageTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosSwitchTest"/>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,19 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Android Unified Events Test Run">
+    <test name="Unified Events Tests">
+        <groups>
+            <run>
+                <include name="unifiedevents"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidPrerollTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidAdsTest"/>
+            <class name="com.tunein.reporting.tests.android.homepage.AndroidHomePageTest"/>
+            <class name="com.tunein.reporting.tests.android.nowplaying.AndroidNowPlayingTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidMidrollTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidAdsWizzTest"/>
+        </classes>
+    </test>
+</suite>

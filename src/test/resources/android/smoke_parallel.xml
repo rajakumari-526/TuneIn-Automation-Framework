@@ -1,0 +1,37 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TuneIn Android Smoke" parallel="tests" thread-count="2" verbose="1" preserve-order="true" configfailurepolicy="continue">
+    <listeners>
+        <listener class-name="com.tunein.mobile.listeners.retrystrategy.RetryListener"/>
+    </listeners>
+    <test name="FirstDevice">
+        <parameter name="appiumPort" value="4951"/>
+        <groups>
+            <run>
+                <include name="smoke"/>
+                <exclude name="ignore"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.tunein.mobile.tests.android.authentication.AndroidSignInSignOutTest"/>
+            <class name="com.tunein.mobile.tests.android.nowplaying.AndroidNowPlayingButtonFunctionalityTest"/>
+            <class name="com.tunein.mobile.tests.android.authentication.AndroidSignUpTest"/>
+        </classes>
+    </test>
+    <test name="SecondDevice">
+        <parameter name="appiumPort" value="4953"/>
+        <groups>
+            <run>
+                <include name="smoke"/>
+                <exclude name="ignore"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.tunein.mobile.tests.android.contentprofile.AndroidContentProfileTest"/>
+            <class name="com.tunein.mobile.tests.android.browsies.AndroidBrowsiesTest"/>
+            <class name="com.tunein.mobile.tests.android.nowplaying.AndroidNowPlayingGeneralTest"/>
+            <class name="com.tunein.mobile.tests.android.nowplaying.AndroidCarModeTest"/>
+            <class name="com.tunein.mobile.tests.android.search.AndroidSearchTest"/>
+        </classes>
+    </test>
+</suite>

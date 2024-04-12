@@ -1,0 +1,28 @@
+name: Required additional approve 
+on:
+  pull_request_review:
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+
+jobs:
+  check:
+    name: run-action-required-review
+    runs-on: ubuntu-small-latest
+
+    # GitHub should provide a "pull_request_review_target", but they don't and
+    # the action will fail if run on a forked PR.
+    if: github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
+
+    steps:
+      - uses: Automattic/action-required-review@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          requirements: |
+            - paths: unmatched
+              teams:
+               - any-of:
+                 - '@olezvinskyi'
+                 - '@ingoheuttunein'
+                 - '@venkatvaddi666'
+                 - '@srivaniKalyampudi'
+          status: Waiting for Approve from the approval team

@@ -1,0 +1,15 @@
+- [ ] Automation ticket: [TEST-00000](https://tunein.atlassian.net/browse/TEST-00000)
+- [ ] Tested with Gradle build on Android
+- [ ] Tested with Gradle build on IOS
+- [ ] Updated test case(s) with automation status in TestRail
+
+### Automation Tests
+```Test names```
+
+### Testrail testcases
+<!--- List your automated test cases for both Android and iOS --->
+- [Android - C00000](https://tunein.testrail.io/index.php?/cases/view/AUTOMATED_TEST_ID)
+- [IOS - C00000](https://tunein.testrail.io/index.php?/cases/view/AUTOMATED_TEST_ID)
+
+### Description
+<!--- Notes regarding code changes. --->

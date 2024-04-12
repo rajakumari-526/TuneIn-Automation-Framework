@@ -1,0 +1,2 @@
+effectiveurl,media_type,station_name,station_no,stream_no,hours,player_url,exception_string,url_tune_ashx_err_msg,bitrate_tune_ashx,media_type_tune_ashx
+https://centova12.instainternet.com/proxy/kepadre?mp=/stream,MP3,KePadre,33809,191426786,762637.8308,https://tunein.com/embed/player/s33809/?testStreamId=e191426786&autoplay=true,,,192,mp3

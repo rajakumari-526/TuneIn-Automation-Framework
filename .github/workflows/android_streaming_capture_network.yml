@@ -1,0 +1,133 @@
+name: Android Streaming Testing (Capture Network)
+on:
+#  schedule:
+#    - cron:  '10 */12 * * *'    
+#    - cron:  '*/25 * * * *'
+#  - cron:  '45 */1 * * *'
+
+  workflow_dispatch:
+    inputs:
+      udid:
+        required: true
+        description: 'Device udid'
+        default: ''
+      duration:
+        required: true
+        description: 'Test duration'
+        default: '2400'
+      premium:
+        required: true
+        description: 'Number of premium users per test'
+        default: '0'
+      network:
+        required: true
+        description: 'Capture network traffic'
+        default: 'true'
+      name:
+        required: false
+        description: 'Station name (e.g. MSNBC)'
+      id:
+        required: false
+        description: 'Station guideId (e.g. 297990)'
+      owner:
+        required: true
+        description: 'Name of the team member'
+      serial:
+        required: false
+        description: 'Get serial id from device'
+        default: 'true'
+      internet_speed:
+        required: false
+        description: 'Get internet speed from device'
+        default: 'false'
+env:
+  HEADSPIN_TOKEN: ${{ secrets.HEADSPIN_TOKEN }}
+  PARALLEL_TEST: 'stream_test_parallel_2'
+  SINGLE_TEST: 'stream_test_one_device'
+  STREAMS_JSON_PATH: '/Users/serviceaccount/'
+  STREAMS_JSON_LOCAL_PATH: '/Users/serviceaccount/Streams.json'
+  CURRENT_DATE_FORMAT: 'YYYY_MM_DD_HH_mm_ss_SSS'
+
+jobs:
+  run_tests:
+    runs-on: playback_testing
+    name: Run Streaming Tests
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set-up current date format
+        id: set_date_format
+        uses: Kaven-Universe/github-action-current-date-time@v1
+        with:
+          format: ${{ env.CURRENT_DATE_FORMAT }}
+      - name: Copy and rename Streams.json file
+        # Add conditional (if: ${{ steps.should_run.outputs.RUN_TEST  == 'true'}})
+        id: create_streams_json_path
+        run: |
+          UPDATED_FILE_NAME="Streams_${{ steps.set_date_format.outputs.time }}.json"
+          UPDATED_FILE_PATH="${{ env.STREAMS_JSON_PATH }}"$UPDATED_FILE_NAME
+          echo "STREAM_JSON_FILE_PATH=$UPDATED_FILE_PATH" >> $GITHUB_OUTPUT;
+
+          echo "Current Streams.json file path: ${{ env.STREAMS_JSON_LOCAL_PATH }}"
+          echo "Updated Streams.json file path:" $UPDATED_FILE_PATH
+
+          cp "${{ env.STREAMS_JSON_LOCAL_PATH }}" $UPDATED_FILE_PATH
+      - name: Run Gradle Script
+        id: run_gradle_script
+        run: |
+          ### is on-demand UDID variable set?
+          udid_list="${{ github.event.inputs.udid }}" >> $GITHUB_OUTPUT
+          echo "list of udid(s) set in the inputs.udid variable is ${udid_list}"
+
+          udid_number=$(echo "${udid_list}" | tr ',' '\n' | WC -l) >> $GITHUB_OUTPUT
+          ### remove trailing spaces from udid_number
+          udid_number=$(echo "${udid_number//[[:blank:]]/}")
+          echo "number of udid count set in inputs.udid - ${udid_number}"
+
+          if [ ! -z ${udid_list} ];
+          then
+            if [ ${udid_number} -eq 1 ]; then suite=${{ env.SINGLE_TEST }} >> $GITHUB_OUTPUT; else suite=${{ env.PARALLEL_TEST }} >> $GITHUB_OUTPUT; fi
+          else
+            suite=${{ env.PARALLEL_TEST }} >> $GITHUB_OUTPUT
+          fi
+
+          echo "test suite in use ${suite}"
+
+          # run test
+           gradle clean runTest \
+            -Dmobile.os=android \
+            -Dstore.rp.url.in.file=true \
+            -Dsuite="${suite}" \
+            -Dappium.stream.test.enabled="true" \
+            -Dappium.stream.headspin.token="${{ env.HEADSPIN_TOKEN }}" \
+            -Dappium.stream.monitor.duration="${{ github.event.inputs.duration || '2700' }}" \
+            -Dudid="${{ github.event.inputs.udid || '' }}" \
+            -Dappium.premium.user.test="${{ github.event.inputs.premium || '0' }}" \
+            -Dappium.stream.headspin.capture.network="${{ github.event.inputs.network || 'true' }}" \
+            -Dappium.stream.write.to.file="true" \
+            -Dappium.real.device.uninstall.tunein.app="false" \
+            -Dappium.real.device.install.tunein.app="false" \
+            -Dappium.stream.headspin.disable.http2="true" \
+            -Dappium.stream.station.name="${{ github.event.inputs.name || '' }}" \
+            -Dappium.stream.station.id="${{ github.event.inputs.id || '' }}" \
+            -Dappium.stream.owner.name="${{ github.event.inputs.owner || '' }}" \
+            -Dappium.stream.internet.speed.test="${{ github.event.inputs.internet_speed || 'true' }}" \
+            -Dappium.stream.local.json.file.path="${{ steps.create_streams_json_path.outputs.STREAM_JSON_FILE_PATH || env.STREAMS_JSON_PATH }}" \
+            -Dappium.stream.get.serial.id="${{ github.event.inputs.serial || 'true' }}" \
+            -Dtest.on.real.devices="true" \
+            -Drp.project=playback_testing \
+            -Drp.enable=true \
+            -Drp.launch=ANDROID_PLAYBACK_TESTING_WITH_NETWORK \
+            -Dorg.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home \
+            --debug \
+            --configure-on-demand
+      - name: Delete Streams.json file
+        if: always()
+        # Add conditional (if: ${{ steps.should_run.outputs.RUN_TEST  == 'true'}})
+        id: delete_streams_json_file
+        run: |
+          echo "${{ steps.create_streams_json_path.outputs.STREAM_JSON_FILE_PATH }}"
+          rm -f "${{ steps.create_streams_json_path.outputs.STREAM_JSON_FILE_PATH }}"
+      - name: Get Report Portal URL
+        if: always()
+        id: report_portal_url
+        run: echo $(cat android_report_portal_launch_id.txt)

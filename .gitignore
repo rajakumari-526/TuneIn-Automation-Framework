@@ -1,0 +1,36 @@
+# Project exclude paths
+/.gradle/
+/build/
+/build/classes/java/main/
+/build/classes/java/test/
+/gradlew.bat
+/allure-results
+/deriveData
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+**/*chromedriver
+**/mapping.json
+
+#user specific staff
+.idea/
+/AutomationReport/
+/player_test_source_streams_results.csv

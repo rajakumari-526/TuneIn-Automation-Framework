@@ -1,0 +1,30 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TuneIn Android Stability PR Tests" parallel="tests" thread-count="2" verbose="1" preserve-order="true">
+    <test name="DeviceOne">
+        <classes>
+            <class name="com.tunein.stability.tests.android.AndroidListeningTest">
+                <methods>
+                    <include name="testInterruptPlayback"/>
+                    <include name="testListeningInBackground"/>
+                    <include name="testUseOfMediaControls"/>
+                    <include name="testWeakNetworkCondition"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="DeviceTwo">
+        <classes>
+            <class name="com.tunein.stability.tests.android.AndroidListeningTest">
+                <methods>
+                    <include name="testPlaybackDuringCarMode"/>
+                    <include name="testSwitchBetweenStationsAndPodcasts"/>
+                    <include name="testRegularListening"/>
+                    <include name="testStreamStabilityDuringScreenSwitch"/>
+                    <include name="testLockedScreen"/>
+                    <include name="testListeningInBackground"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

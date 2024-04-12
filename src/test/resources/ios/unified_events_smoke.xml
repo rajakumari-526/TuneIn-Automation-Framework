@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="iOS Unified Events Smoke Test Run">
+    <test name="Unified Events Tests">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.tunein.reporting.tests.ios.ads.IosPrerollTest"/>
+            <class name="com.tunein.reporting.tests.ios.ads.IosAdsTest"/>
+            <class name="com.tunein.reporting.tests.ios.ads.IosMidrollTest"/>
+        </classes>
+    </test>
+</suite>

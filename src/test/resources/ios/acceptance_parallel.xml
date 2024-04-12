@@ -1,0 +1,68 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TuneIn iOS Acceptance" parallel="tests" thread-count="4" verbose="1" preserve-order="true" configfailurepolicy="continue">
+    <listeners>
+        <listener class-name="com.tunein.mobile.listeners.retrystrategy.RetryListener"/>
+    </listeners>
+    <test name="FirstDevice">
+        <parameter name="appiumPort" value="4951"/>
+        <groups>
+            <run>
+                <include name="acceptance"/>
+                <exclude name="ignore"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.tunein.mobile.tests.ios.authentication.IosSignInSignOutTest"/>
+            <class name="com.tunein.mobile.tests.ios.contentprofile.IosContentProfileTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosMiniPlayerTest"/>
+            <class name="com.tunein.mobile.tests.ios.homepage.IosHomePageTest"/>
+        </classes>
+    </test>
+    <test name="SecondDevice">
+        <parameter name="appiumPort" value="4953"/>
+        <groups>
+            <run>
+                <include name="acceptance"/>
+                <exclude name="ignore"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.tunein.mobile.tests.ios.interruptions.IosInterruptionsTest"/>
+            <class name="com.tunein.mobile.tests.ios.library.IosLibraryTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingGeneralTest"/>
+            <class name="com.tunein.mobile.tests.ios.authentication.IosSignUpTest"/>
+        </classes>
+    </test>
+    <test name="ThirdDevice">
+        <parameter name="appiumPort" value="4955"/>
+        <groups>
+            <run>
+                <include name="acceptance"/>
+                <exclude name="ignore"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingButtonFunctionalityTest"/>
+            <class name="com.tunein.mobile.tests.ios.search.IosSearchTest"/>
+            <class name="com.tunein.mobile.tests.ios.upgrade.IosUpgradeTest"/>
+            <class name="com.tunein.mobile.tests.ios.upsell.IosUpsellTest"/>
+            <class name="com.tunein.mobile.tests.ios.userprofile.IosUserProfileTest"/>
+        </classes>
+    </test>
+    <test name="FourthDevice">
+        <parameter name="appiumPort" value="4957"/>
+        <groups>
+            <run>
+                <include name="acceptance"/>
+                <exclude name="ignore"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.tunein.mobile.tests.ios.browsies.IosBrowsiesTest"/>
+            <class name="com.tunein.mobile.tests.ios.navigation.IosNavigationTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosCarModeTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingMetaDataTest"/>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,256 @@
+name: Android Player Stability Run For PR
+on:
+  workflow_dispatch:
+    inputs:
+      android_branch_name:
+        required: true
+        description: 'Android branch name'
+      android_git_commit:
+        required: true
+        description: 'Android git commit'
+      bitrise_public_install_page_url:
+        required: true
+        description: 'Android Build Public Url'
+      bitrise_android_build_slug:
+        required: true
+        description: 'Bitrise Android build slug'
+
+env:
+  BITRISE_ANDROID_APP_SLUG: '783ace2f5373a9a0'
+  HEADSPIN_TOKEN: ${{ secrets.HEADSPIN_TOKEN_ADDITIONAL }}
+  BITRISE_API_TOKEN: ${{ secrets.BITRISE_API_TOKEN }}
+  REPORT_PORTAL_TOKEN: ${{ secrets.REPORT_PORTAL_TOKEN }}
+  GIT_TOKEN: ${{ secrets.AUTOMATION_GIT_TOKEN }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run_stability_tests:
+    runs-on: stability_test_pr
+    timeout-minutes: 680
+    if: always()
+    name: Run Android Stability PR Tests.
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Get Bitrise Build URL
+        id: bitrise-build
+        run: |
+            ARTIFACT_SLUG=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_ANDROID_APP_SLUG}}/builds/${{ github.event.inputs.bitrise_android_build_slug }}/artifacts" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data[]|  select(.title | startswith("tunein-googleFlavor-tuneinFree-fat-debug")) |.slug')
+            echo $ARTIFACT_SLUG
+            echo "APP_URL=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_ANDROID_APP_SLUG}}/builds/${{ github.event.inputs.bitrise_android_build_slug }}/artifacts/$ARTIFACT_SLUG" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data | .expiring_download_url' )" >> $GITHUB_OUTPUT
+            echo $APP_URL
+
+      - name: Download App file
+        run: curl "${{steps.bitrise-build.outputs.APP_URL}}" --output "/Users/serviceaccount/Apps/Android/Daily/tunein_stability_pr.apk"
+
+      - name: Parse PR data
+        if: always()
+        id: pr_data
+        run: |
+          echo "PR_URL=$(curl -X GET https://api.github.com/repos/tunein/android/commits/${{ github.event.inputs.android_git_commit }}/pulls -H "Authorization: token ${{env.GIT_TOKEN}}" -H "accept: application/vnd.github+json" | jq -r '.[0] | {html_url} | .html_url')" >> $GITHUB_OUTPUT
+          echo "PR_ID=$(curl -X GET https://api.github.com/repos/tunein/android/commits/${{ github.event.inputs.android_git_commit }}/pulls -H "Authorization: token ${{env.GIT_TOKEN}}" -H "accept: application/vnd.github+json" | jq -r '.[0] | {number} | .number')" >> $GITHUB_OUTPUT
+
+      - name: Set pending commit status
+        run: |
+          curl -L \
+          -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: token ${{env.GIT_TOKEN}}" \
+          https://api.github.com/repos/tunein/android/statuses/${{ github.event.inputs.android_git_commit }} \
+          -d '{"state":"pending","target_url":"https://github.com/tunein/mobile-automation-framework/actions/runs/${{ github.run_id }}","description":"Stability tests","context":"automation-tests/github"}'
+
+      - name: Run Gradle Script
+        run: |
+          gradle clean runTest \
+            -Dandroid.useAndroidX=true \
+            -Dandroid.enableJetifier=true \
+            -Dorg.gradle.parallel=true \
+            -Dmobile.os=android \
+            -Dstore.rp.url.in.file=true \
+            -Dorg.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home \
+            -Dudid="ZY22FDCPST,R52T707D1YX" \
+            -Dtest.on.real.devices="true" \
+            -Dappium.stream.headspin.token="${{ env.HEADSPIN_TOKEN }}" \
+            -Dheadspin.app.path="/Users/serviceaccount/Apps/Android/Daily/tunein_stability_pr.apk" \
+            -Dapp.path="/Users/serviceaccount/Apps/Android/Daily/tunein_stability_pr.apk" \
+            -Dappium.start.retry.number=5 \
+            -Dappium.real.device.uninstall.tunein.app="false" \
+            -Dappium.real.device.install.tunein.app="true" \
+            -Dsuite=stability_pr_test \
+            -Drp.project=stability_testing \
+            -Drp.enable=true \
+            -Drp.launch=ANDROID_Stability_PR_Test_Run \
+            -Delement.visible.timeout.seconds=10 \
+            -Delement.wait.long.timeout.seconds=40 \
+            -Dpage.ready.timeout.seconds=25 \
+            -Delement.wait.very.short.timeout.seconds=6 \
+            -Dappium.headless.mode=true \
+            -Dappium.log.level=debug \
+            -Delement.wait.medium.timeout.seconds=20 \
+            -Dcustom.wait.timeout.milliseconds=20000 \
+            -Delement.wait.very.short.timeout.seconds=5 \
+            -Dtimeout.for.stability.tests.in.seconds=1200 \
+            -Dnew.command.timeout.seconds=3600 \
+            -Dwait.for.server=true \
+            -Dstability.tests=true \
+            -Ddev.pr=true \
+            -Dwrite.to.file.stability.results=true \
+            -Drp.token=${{env.REPORT_PORTAL_TOKEN}} \
+            -Dselenide.remoteReadTimeout=240000 \
+            --info --configure-on-demand
+
+      - name: Wait for results
+        uses: juliangruber/sleep-action@v1
+        with:
+          time: 15s
+
+      - name: Get Report Portal URL
+        if: always()
+        id: report_portal_url
+        run: echo "RP_URL=$(cat android_report_portal_launch_id.txt)" >> $GITHUB_OUTPUT
+
+      - name: Get Report Portal ID
+        if: always()
+        id: report_portal_id
+        run: echo "REPORT_PORTAL_ID=$( echo ${{steps.report_portal_url.outputs.RP_URL}} | sed 's/.*all//' | cut -d '/' -f2-)" >> $GITHUB_OUTPUT
+
+      - name: Get Total Number of tests
+        if: always()
+        id: tests_total_number
+        run: |
+          echo "TESTS_TOTAL_NUMBER=$(curl -X GET "https://tunein.reportportal.io/api/v1/stability_testing/launch/uuid/${{steps.report_portal_id.outputs.REPORT_PORTAL_ID}}" -H "accept: application/json" -H "Authorization: bearer ${{env.REPORT_PORTAL_TOKEN}}" | jq -r ' .statistics | .executions | {total} | .total')" >> $GITHUB_OUTPUT
+
+      - name: Get Passed Number of tests
+        if: always()
+        id: tests_passed_number
+        run: |
+          echo "TESTS_PASSED_NUMBER=$(curl -X GET "https://tunein.reportportal.io/api/v1/stability_testing/launch/uuid/${{steps.report_portal_id.outputs.REPORT_PORTAL_ID}}" -H "accept: application/json" -H "Authorization: bearer ${{env.REPORT_PORTAL_TOKEN}}" | jq -r ' .statistics | .executions | {passed} | .passed')" >> $GITHUB_OUTPUT
+
+      - name: Get Failed Number of tests
+        if: always()
+        id: tests_failed_number
+        run: |
+          echo "TESTS_FAILED_NUMBER=$(curl -X GET "https://tunein.reportportal.io/api/v1/stability_testing/launch/uuid/${{steps.report_portal_id.outputs.REPORT_PORTAL_ID}}" -H "accept: application/json" -H "Authorization: bearer ${{env.REPORT_PORTAL_TOKEN}}" | jq -r ' .statistics | .executions | {failed} | .failed')" >> $GITHUB_OUTPUT
+
+      - name: Get Skipped Number of tests
+        if: always()
+        id: tests_skipped_number
+        run: |
+          echo "TESTS_SKIPPED_NUMBER=$(curl -X GET "https://tunein.reportportal.io/api/v1/stability_testing/launch/uuid/${{steps.report_portal_id.outputs.REPORT_PORTAL_ID}}" -H "accept: application/json" -H "Authorization: bearer ${{env.REPORT_PORTAL_TOKEN}}" | jq -r ' .statistics | .executions | {skipped} | .skipped')" >> $GITHUB_OUTPUT
+
+      - name: Define if run is failed
+        if: always()
+        id: is_run_failed
+        run: echo "FAILED_CODE=$( if (( ${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}} == null )); then echo '0'; elif (( ${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}} > 0 )); then echo '1'; else echo '0'; fi)" >> $GITHUB_OUTPUT
+
+      - name: Post Results in Dev Pr
+        if: ${{ steps.is_run_failed.outputs.FAILED_CODE == 1 || failure() }}
+        run: |
+          curl -X POST https://api.github.com/repos/tunein/android/issues/${{steps.pr_data.outputs.PR_ID}}/comments  -d '{"body":"Stability Tests\n ReportPortal URL: ${{steps.report_portal_url.outputs.RP_URL}}\n Commit: ${{ github.event.inputs.android_git_commit }}\n Number of Failed tests: ${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}}"}' -H "Content-Type: application/vnd.github+json" -H "Authorization: token ${{env.GIT_TOKEN}}"
+
+      - name: Set success commit status
+        if: ${{ steps.is_run_failed.outputs.FAILED_CODE == 0 }}
+        run: |
+          curl -L \
+          -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: token ${{env.GIT_TOKEN}}" \
+          https://api.github.com/repos/tunein/android/statuses/${{ github.event.inputs.android_git_commit }} \
+          -d '{"state":"success","target_url":"https://github.com/tunein/mobile-automation-framework/actions/runs/${{ github.run_id }}","description":"Stability tests - success","context":"automation-tests/github", "avatar_url":"https://iconape.com/wp-content/files/ex/291836/png/appium-logo.png"}'
+
+      - name: Set failure commit status
+        if: ${{ steps.is_run_failed.outputs.FAILED_CODE == 1 || failure() }}
+        run: |
+          curl -L \
+          -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: token ${{env.GIT_TOKEN}}" \
+          https://api.github.com/repos/tunein/android/statuses/${{ github.event.inputs.android_git_commit }} \
+          -d '{"state":"failure","target_url":"https://github.com/tunein/mobile-automation-framework/actions/runs/${{ github.run_id }}","description":"Stability tests - failure","context":"automation-tests/github"}'
+
+      - name: Set block color
+        if: always()
+        id: color
+        run: echo "COLOR=$( if (( ${{steps.is_run_failed.outputs.FAILED_CODE }} == 1)); then echo 'danger'; else echo 'good'; fi)" >> $GITHUB_OUTPUT
+
+      - name: Define message
+        if: always()
+        id: title
+        run: |
+          echo "RESULT_MESSAGE=$( if (( ${{steps.is_run_failed.outputs.FAILED_CODE }} == 1)); then echo ':octagonal_sign: *Testing Failed*'; else echo ':white_check_mark: *Testing Passed*'; fi)" >> $GITHUB_OUTPUT
+
+      - name: Send GitHub Action trigger data to Slack workflow
+        if: always()
+        id: slack
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          channel-id: 'C01RZC085C1'
+          payload: |
+            {
+            "attachments":
+            [
+             { "mrkdwn_in": [ "text","pretext"],
+             "pretext": ":robot_face: Android Stability PR Test Results \n ${{steps.title.outputs.RESULT_MESSAGE}}",
+             "color": "${{steps.color.outputs.COLOR}}",
+             "title": "Total number:${{steps.tests_total_number.outputs.TESTS_TOTAL_NUMBER}}, Passed:${{steps.tests_passed_number.outputs.TESTS_PASSED_NUMBER}}, Failed:${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}}, Skipped:${{steps.tests_skipped_number.outputs.TESTS_SKIPPED_NUMBER}}",
+             "fields": [
+                         {
+                          "title": "*App:*",
+                          "value": "mobile-automation-framework",
+                          "short": true
+                         },
+                         {
+                          "title": "*Branch:*",
+                          "value": "${{ github.event.inputs.android_branch_name }}",
+                          "short": true
+                         },
+                         {
+                          "title": "*Commit:*",
+                          "value": "${{ github.event.inputs.android_git_commit }}  ",
+                          "short": true
+                         },
+                         {
+                          "title": "*Workflow:*",
+                          "value": "Android Player Stability Run For PR",
+                          "short": true
+                         }
+                        ],
+               "actions": [
+                          {
+                            "name": "reportportal",
+                            "text": "ReportPortal",
+                            "type": "button",
+                            "url": "${{steps.report_portal_url.outputs.RP_URL}}"
+                          },
+                          {
+                            "name": "githubworkflow",
+                            "text": "Workflow Run",
+                            "type": "button",
+                            "url": "https://github.com/tunein/mobile-automation-framework/actions/runs/${{ github.run_id }}"
+                          },
+                          {
+                            "name": "pullrequest",
+                            "text": "Pull Request",
+                            "type": "button",
+                            "url": "${{steps.pr_data.outputs.PR_URL}}"
+                          },
+                          {
+                            "name": "appurl",
+                            "text": "Download App",
+                            "type": "button",
+                            "url": "${{ github.event.inputs.bitrise_public_install_page_url }}"
+                          }
+                          ]
+                     }
+              ]
+             }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

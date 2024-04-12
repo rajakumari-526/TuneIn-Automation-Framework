@@ -1,0 +1,21 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Android Reporting Test Run">
+    <test name="Reporting Tests">
+        <groups>
+            <run>
+                <include name="ads_parameters"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidIMATest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidAdsTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidMidrollTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidAdsWizzTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidGAMTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidBannersTest"/>
+            <class name="com.tunein.reporting.tests.android.explorer.AndroidExplorerPageTest"/>
+            <class name="com.tunein.reporting.tests.android.boost.AndroidSwitchTest"></class>
+        </classes>
+    </test>
+</suite>

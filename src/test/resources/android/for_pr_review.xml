@@ -1,0 +1,43 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Android PR Review Test Run" parallel="none" preserve-order="true">
+    <test name="New Tests">
+        <classes>
+            <class name="com.tunein.mobile.tests.android.contentprofile.AndroidContentProfileTest"/>
+            <class name="com.tunein.mobile.tests.android.homepage.AndroidHomePageTest"/>
+            <class name="com.tunein.mobile.tests.android.search.AndroidSearchTest"/>
+            <class name="com.tunein.mobile.tests.android.interruptions.AndroidInterruptionsTest"/>
+            <class name="com.tunein.mobile.tests.android.authentication.AndroidSignUpTest"/>
+            <class name="com.tunein.mobile.tests.android.nowplaying.AndroidNowPlayingGeneralTest"/>
+            <class name="com.tunein.mobile.tests.android.nowplaying.AndroidNowPlayingScrollableTest"/>
+            <class name="com.tunein.mobile.tests.android.authentication.AndroidSignInSignOutTest"/>
+            <class name="com.tunein.mobile.tests.android.nowplaying.AndroidMiniPlayerTest"/>
+            <class name="com.tunein.mobile.tests.android.upsell.AndroidUpsellTest"/>
+            <class name="com.tunein.mobile.tests.android.browsies.AndroidBrowsiesTest"/>
+            <class name="com.tunein.mobile.tests.android.nowplaying.AndroidNowPlayingButtonFunctionalityTest"/>
+            <class name="com.tunein.mobile.tests.android.nowplaying.AndroidNowPlayingMetaDataTest"/>
+            <class name="com.tunein.mobile.tests.android.deeplinks.AndroidDeepLinksTest"/>
+            <class name="com.tunein.mobile.tests.android.library.AndroidLibraryTest"/>
+            <class name="com.tunein.mobile.tests.android.nowplaying.AndroidCarModeTest"/>
+            <class name="com.tunein.mobile.tests.android.userprofile.AndroidUserProfileTest"/>
+            <class name="com.tunein.mobile.tests.android.navigation.AndroidNavigationTest"/>
+            <class name="com.tunein.mobile.tests.android.upgrade.AndroidUpgradeTest"/>
+            <class name="com.tunein.mobile.tests.android.subscription.AndroidSubscriptionTest"/>
+            <class name="com.tunein.mobile.tests.android.explorer.AndroidExplorerPageTest"/>
+            <class name="com.tunein.mobile.tests.android.nowplaying.AndroidSwitchTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidPrerollTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidAdsTest"/>
+            <class name="com.tunein.reporting.tests.android.homepage.AndroidHomePageTest"/>
+            <class name="com.tunein.reporting.tests.android.nowplaying.AndroidNowPlayingTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidMidrollTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidAdsWizzTest"/>
+            <class name="com.tunein.stability.tests.android.AndroidListeningTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidIMATest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidGAMTest"/>
+            <class name="com.tunein.reporting.tests.android.ads.AndroidBannersTest"/>
+            <class name="com.tunein.reporting.tests.android.explorer.AndroidExplorerPageTest"/>
+            <class name="com.tunein.reporting.tests.android.boost.AndroidSwitchTest"/>
+            <class name="com.tunein.mobile.tests.android.ads.AndroidAdsUITest"/>
+        </classes>
+    </test>
+</suite>

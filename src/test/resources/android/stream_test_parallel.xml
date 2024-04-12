@@ -1,0 +1,34 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TuneIn Android Stream Tests" parallel="tests" thread-count="6" verbose="1" preserve-order="true">
+    <test name="DeviceOne">
+        <parameter name="appiumPort" value="4965"/>
+        <classes>
+            <class name="com.tunein.playback.tests.StreamTest">
+                <methods>
+                    <include name="testStreams"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="DeviceTwo">
+        <parameter name="appiumPort" value="4964"/>
+        <classes>
+            <class name="com.tunein.playback.tests.StreamTest">
+                <methods>
+                    <include name="testStreams"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="DeviceThree">
+        <parameter name="appiumPort" value="4963"/>
+        <classes>
+            <class name="com.tunein.playback.tests.StreamTest">
+                <methods>
+                    <include name="testStreams"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

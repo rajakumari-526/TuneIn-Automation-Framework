@@ -1,0 +1,20 @@
+name: Pull Request Title Rules
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  run-pr-title-rules:
+    runs-on: ubuntu-small-latest
+    steps:
+      - name: Example of correct PR name
+        run: echo "TEST-771 - Sign in without internet"
+      - uses: deepakputhraya/action-pr-title@master
+        with:
+          regex: '\ - [A-Z][a-zA-Z0-9,-\/]*(?: [a-zA-Z\/0-9,-\\)\\(]*)*$' # Regex the title should match.
+          allowed_prefixes: 'TEST-' # title should start with the given prefix.
+          disallowed_prefixes: 'feature,feat/,feat:,Test ,Test_,TEST_,TEST ,TEST- ,TEST_ ,hotfix' # title should not start with the given prefix
+          prefix_case_sensitive: false # title prefix are case insensitive
+          min_length: 20 # Min length of the title
+          max_length: 100 # Max length of the title
+          github_token: ${{ secrets.GITHUB_TOKEN }} # Default: ${{ github.token }}

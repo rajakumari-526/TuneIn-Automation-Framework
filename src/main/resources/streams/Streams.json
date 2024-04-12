@@ -1,0 +1,146 @@
+[
+  {
+    "00008101-001660343663003A": {
+      "deviceName": "iPhone 12",
+      "stationName": "The Rick & Bubba Show",
+      "stationId": "208566",
+      "streamType": "AAC",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "00008110-0004546A3485401E": {
+      "deviceName": "iPhone 14",
+      "stationName": "2SM 1269AM Sydney",
+      "stationId": "7643",
+      "streamType": "AAC",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "00008110-00046C600EB8801E": {
+      "deviceName": "iPhone 13",
+      "stationName": "Radio Bollerwagen",
+      "stationId": "286815",
+      "streamType": "MP3",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "00008110-000224A92282401E": {
+      "deviceName": "iPhone 13 Pro Max",
+      "stationName": "FIVEaa",
+      "stationId": "9114",
+      "streamType": "AAC",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "00008120-0009344E0203C01E": {
+      "deviceName": "iPhone 14 Pro",
+      "stationName": "AM950 The Progressive Voice of Minnesota",
+      "stationId": "31969",
+      "streamType": "HLS",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "00008101-000344412282001E": {
+      "deviceName": "iPhone 12",
+      "stationName": "1.FM - High Voltage Radio",
+      "stationId": "47727",
+      "streamType": "AAC",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "24191FDF6005YS": {
+      "deviceName": "Pixel 6",
+      "stationName": "CNN",
+      "stationId": "20407",
+      "streamType": "HLS",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "2A221JEGR10220": {
+      "deviceName": "Pixel 6a",
+      "stationName": "GAM Companion test",
+      "stationId": "309392",
+      "streamType": "MP3",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "27261FDH3000GY": {
+      "deviceName": "Pixel 7 Pro",
+      "stationName": "GAM Companion test",
+      "stationId": "309392",
+      "streamType": "MP3",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "R5CT90RF03W": {
+      "deviceName": "SM-S901U1",
+      "stationName": "GAM Companion test",
+      "stationId": "309392",
+      "streamType": "AAC",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "ZY22FDCPST": {
+      "deviceName": "moto g 5G (2022)",
+      "stationName": "GAM Companion test",
+      "stationId": "309392",
+      "streamType": "MP3",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "R5CT90REYXM": {
+      "deviceName": "SM-S901U1",
+      "stationName": "Universal 88.1",
+      "stationId": "1171",
+      "streamType": "MP3",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "00008101-00092D8A0C89001E": {
+      "deviceName": "iPad (10th Gen)",
+      "stationName": "Musiquera",
+      "stationId": "85712",
+      "streamType": "MP3",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "00008110-0001743402A2401E": {
+      "deviceName": "iPhone SE (3rd Gen)",
+      "stationName": "Audio Noir",
+      "stationId": "95884",
+      "streamType": "MP3",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "00e6145ae463": {
+      "deviceName": "Redmi Note 11 Pro 5G",
+      "stationName": "La Chevere",
+      "stationId": "25984",
+      "streamType": "MP3",
+      "networkType": "WiFi"
+    }
+  },
+  {
+    "R52T707D1YX": {
+      "deviceName": "Galaxy Tab 7 FE",
+      "stationName": "NOTIUNO 630",
+      "stationId": "2337",
+      "streamType": "MP3",
+      "networkType": "WiFi"
+    }
+  }
+]

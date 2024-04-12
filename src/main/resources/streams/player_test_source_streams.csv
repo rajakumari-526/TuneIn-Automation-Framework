@@ -1,0 +1,62 @@
+effectiveurl,media_type,station_name,station_no,stream_no,hours,player_url,exception_string,url_tune_ashx_err_msg,bitrate_tune_ashx,media_type_tune_ashx
+https://ad-hls.tunein.com/v1/master/30ead7055f8b8e1f2f04add745f139b184df6925/production/v3/newsfree/msnbcfree/master.m3u8,HLS,MSNBC,297990,125672951,14727637.94,https://tunein.com/embed/player/s297990/?testStreamId=e125672951&autoplay=true,,,96,hls
+https://ad-hls.tunein.com/v1/master/30ead7055f8b8e1f2f04add745f139b184df6925/production/v3/newsfree/cnnfree/master.m3u8,HLS,CNN,20407,125672823,9630681.893,https://tunein.com/embed/player/s20407/?testStreamId=e125672823&autoplay=true,,,96,hls
+https://ad-hls.tunein.com/v1/master/30ead7055f8b8e1f2f04add745f139b184df6925/production/v3/newsfree/espnfree/master.m3u8,HLS,ESPN Radio,25876,189633643,3963880.047,https://tunein.com/embed/player/s25876/?testStreamId=e189633643&autoplay=true,,,96,hls
+https://ad-hls.tunein.com/v1/master/30ead7055f8b8e1f2f04add745f139b184df6925/production/v3/newsfree/cnbcfree/master.m3u8,HLS,CNBC,110052,125672755,3291920.908,https://tunein.com/embed/player/s110052/?testStreamId=e125672755&autoplay=true,,,96,hls
+https://ad-hls.tunein.com/v1/master/30ead7055f8b8e1f2f04add745f139b184df6925/production/v3/newsfree/foxfree/master.m3u8,HLS,FOX News Radio,20431,125672986,2882365.911,https://tunein.com/embed/player/s20431/?testStreamId=e125672986&autoplay=true,,,96,hls
+https://radios-gt.cdn.nedmedia.io/radios/gt/exitos.m3u8,HLS,Exitos 90.9,129642,167144467,2093105.869,https://tunein.com/embed/player/s129642/?testStreamId=e167144467&autoplay=true,,,32,hls
+https://1132747t.ha.azioncdn.net/primary/gaucha_rbs.sdp/playlist.m3u8,HLS,Gaúcha FM Porto Alegre,132681,105766319,1919948.807,https://tunein.com/embed/player/s132681/?testStreamId=e105766319&autoplay=true,,,32,hls
+https://live.wostreaming.net/manifest/goodkarma-wepnfmaac-hlsc.m3u8,HLS,98.7 FM ESPN New York,22469,199732255,1767895.191,https://tunein.com/embed/player/s22469/?testStreamId=e199732255&autoplay=true,,,48,hls
+https://radios-gt.cdn.nedmedia.io/radios/gt/tropicalida.m3u8,HLS,Radio Tropicalida,11115,144305100,1527993.692,https://tunein.com/embed/player/s11115/?testStreamId=e144305100&autoplay=true,,,64,hls
+https://hls.kqed.org/kqed-256/playlist.m3u8,HLS,KQED-FM,34804,194888723,1190532.743,https://tunein.com/embed/player/s34804/?testStreamId=e194888723&autoplay=true,,,256,hls
+https://rthkaudio2-lh.akamaihd.net/i/radio2_1@355865/master.m3u8,HLS,香港電台 第二台,14488,106000235,168025.8942,https://tunein.com/embed/player/s14488/?testStreamId=e106000235&autoplay=true,,,56,hls
+https://rcavliveaudio-tunein.akamaized.net/hls/live/2006979/M-7QMTL0_MTL/playlist.m3u8,HLS,ICI Musique Montreal,1917,162381337,3385.475833,https://tunein.com/embed/player/s1917/?testStreamId=e162381337&autoplay=true,,,192,hls
+https://audio.bfmtv.com/rmcradio_128.mp3?aw_0_1st.aggregator=tunein,MP3,RMC,14896,177049109,17262684.83,https://tunein.com/embed/player/s14896/?testStreamId=e177049109&autoplay=true,,,128,mp3
+https://icecast.rtl.fr/rtl-1-44-128?aw_0_1st.playerId=external_tunein,MP3,RTL,6617,187930214,14036694.99,https://tunein.com/embed/player/s6617/?testStreamId=e187930214&autoplay=true,,,128,mp3
+https://scdn.nrjaudio.fm/adwz2/fr/30601/mp3_128.mp3?origine=tune-in-radio,MP3,Nostalgie,2960,133234393,11097801.28,https://tunein.com/embed/player/s2960/?testStreamId=e133234393&autoplay=true,,,128,mp3
+http://radio.talksport.com/stream?awparams=platform:ts-web;lang:en,MP3,talkSPORT,17077,14406000,7951447.311,https://tunein.com/embed/player/s17077/?testStreamId=e14406000&autoplay=true,,,32,mp3
+http://direct.franceinter.fr/live/franceinter-midfi.mp3?ID=76zqey582k,MP3,France Inter,24875,75043318,6985528.509,https://tunein.com/embed/player/s24875/?testStreamId=e75043318&autoplay=true,,,128,mp3
+https://scdn.nrjaudio.fm/adwz2/fr/30001/mp3_128.mp3?origine=tune-in-radio,MP3,NRJ,2339,133288752,5387917.414,https://tunein.com/embed/player/s2339/?testStreamId=e133288752&autoplay=true,,,128,mp3
+https://icstream.rds.radio/rds,MP3,RDS Radio,16202,100727414,5294861.767,https://tunein.com/embed/player/s16202/?testStreamId=e100727414&autoplay=true,,,256,mp3
+https://scdn.nrjaudio.fm/adwz2/fr/30201/mp3_128.mp3?origine=tune-in-radio,MP3,Chérie,3124,133234317,4905911.13,https://tunein.com/embed/player/s3124/?testStreamId=e133234317&autoplay=true,,,128,mp3
+https://tunein-valkyrie.streamguys1.com/kbue-mp3,MP3,Que Buena Los Angeles,31883,192931037,4609685.9,https://tunein.com/embed/player/s31883/?testStreamId=e192931037&autoplay=true,,,96,mp3
+https://mixxfmfr.ice.infomaniak.ch/mixxfmfr-192.mp3,MP3,MIXX FM,283408,118438738,1522.161667,https://tunein.com/embed/player/s283408/?testStreamId=e118438738&autoplay=true,,,16,mp3
+https://www.podtrac.com/pts/redirect.mp3/pdst.fm/e/chtbl.com/track/8G441/traffic.megaphone.fm/WWO4172157773.mp3?updated=1650678385,MP3,The Answer Cleveland,27921,201715735,9.709722222,https://tunein.com/embed/player/s27921/?testStreamId=e201715735&autoplay=true,,,20,mp3
+http://provisioning.streamtheworld.com/pls/XEPHAM.pls,MP3,SABROSITA 590,10866,64025025,762637.8308,https://tunein.com/embed/player/s10866/?testStreamId=e64025025&autoplay=true,,,48,mp3
+http://playerservices.streamtheworld.com/pls/KANWFM.pls,MP3,KANW,31454,75248280,178241.1292,https://tunein.com/embed/player/s31454/?testStreamId=e75248280&autoplay=true,,,40,mp3
+http://1.fm/tunestream/ibizachill/listen.pls,MP3,1.FM Tropical House,306581,93693295,22105.70028,https://tunein.com/embed/player/s306581/?testStreamId=e93693295&autoplay=true,,,45,mp3
+http://wsdownload.bbc.co.uk/worldservice/meta/live/shoutcast/mp3/hausa.pls,MP3,BBC Hausa,50643,45085648,669657.7594,https://tunein.com/embed/player/s50643/?testStreamId=e45085648&autoplay=true,,,56,mp3
+https://playerservices.streamtheworld.com/pls/JP_SP_FM.pls,MP3,Jovem Pan FM São Paulo,122944,172352888,227731.7689,https://tunein.com/embed/player/s122944/?testStreamId=e172352888&autoplay=true,,,65,mp3
+https://dattavolt.com/8150/stream,MP3,LA SUPREMA ESTACIÓN,110106,165082489,1834930.883,https://tunein.com/embed/player/s110106/?testStreamId=e165082489&autoplay=true,,,80,aac
+https://rs.suricloud.com/radio/8060/radio.mp3,MP3,Radio 9 Suriname,262310,131198857,60283.27667,https://tunein.com/embed/player/s262310/?testStreamId=e131198857&autoplay=true,,,88,mp3
+https://listen-funkids.sharp-stream.com/funkids.mp3?device=tunein,MP3,Fun Kids,67862,104124925,84201.08222,https://tunein.com/embed/player/s67862/?testStreamId=e104124925&autoplay=true,,,131,mp3
+https://stream.radionl.fm/radionl,MP3,RADIONL,54815,190981365,3669468.835,https://tunein.com/embed/player/s54815/?testStreamId=e190981365&autoplay=true,,,192,mp3
+http://netradio.skala.fm:80/varde,MP3,Skala FM,59265,68754329,731403.1244,https://tunein.com/embed/player/s59265/?testStreamId=e68754329&autoplay=true,,,160,mp3
+https://usa10.fastcast4u.com/power95grenada,MP3,Power 95,259375,189958971,372108.36,https://tunein.com/embed/player/s259375/?testStreamId=e189958971&autoplay=true,,,320,mp3
+http://stream.radiojar.com/x84tcy2wm2zuv,MP3,Mortal FM,122620,179475858,146539.7236,https://tunein.com/embed/player/s122620/?testStreamId=e179475858&autoplay=true,,,224,mp3
+http://provisioning.streamtheworld.com/pls/W_RADIO.pls,MP3,W Radio,16553,3664398,3478567.963,https://tunein.com/embed/player/s16553/?testStreamId=e3664398&autoplay=true,,,64,mp3
+http://tx.planetradio.co.uk/http_live_bauer.php?i=net2somerset.mp3&aw_0_1st.playerid=BMUK_tunein,MP3,Greatest Hits Radio (Somerset),45543,4215697,16343.77333,https://tunein.com/embed/player/s45543/?testStreamId=e4215697&autoplay=true,,,112,mp3
+https://live.kissfm.ro/kissfm.aacp,AAC,Kiss FM Romania,17700,129234966,2596952.035,https://tunein.com/embed/player/s17700/?testStreamId=e129234966&autoplay=true,,,48,aac
+https://icecast-qmusicnl-cdp.triple-it.nl/Qmusic_nl_live_high.aac?aw_0_1st.playerid=tunein,AAC,Qmusic,87683,198425524,13168431.83,https://tunein.com/embed/player/s87683/?testStreamId=e198425524&autoplay=true,,,96,aac
+https://playerservices.streamtheworld.com/api/livestream-redirect/CHMPFMAAC.aac?dist=cogecomedia-tunein,AAC,98 5 FM Montréal,12468,199928201,7340236.142,https://tunein.com/embed/player/s12468/?testStreamId=e199928201&autoplay=true,,,56,aac
+https://p4.p4groupaudio.com/P04_AM?args=tunein_01&distributor=tunein,AAC,P4 Radio Hele Norge,6728,105945802,7004388.135,https://tunein.com/embed/player/s6728/?testStreamId=e105945802&autoplay=true,,,128,aac
+http://newcap.leanstream.co/VOCMAM?args=tunein_02,AAC,VOCM,24752,77667437,5556992.067,https://tunein.com/embed/player/s24752/?testStreamId=e77667437&autoplay=true,,,56,aac
+https://live.wostreaming.net/direct/goodkarma-wknramaac-ibc2,AAC,ESPN Cleveland,30315,165027372,5310062.345,https://tunein.com/embed/player/s30315/?testStreamId=e165027372&autoplay=true,,,64,aac
+http://icecast.omroep.nl/radio2-bb-aac,AAC,NPO Radio 2,9483,6048196,4379707.281,https://tunein.com/embed/player/s9483/?testStreamId=e6048196&autoplay=true,,,64,aac
+https://playerservices.streamtheworld.com/api/livestream-redirect/RIVADAVIAAAC.aac,AAC,Radio Rivadavia,104261,162672041,4080762.281,https://tunein.com/embed/player/s104261/?testStreamId=e162672041&autoplay=true,,,32,aac
+https://stream.100p.nl/100pnl_aac?dist=tunein,AAC,100% NL,76590,174700353,3338680.45,https://tunein.com/embed/player/s76590/?testStreamId=e174700353&autoplay=true,,,128,aac
+http://stream.zenolive.com/ke11dtr5rv5tv,AAC,La Radio De Moda,198406,112850741,3284332.563,https://tunein.com/embed/player/s198406/?testStreamId=e112850741&autoplay=true,,,96,aac
+https://playerservices.streamtheworld.com/api/livestream-redirect/CADENADIALAAC.aac,AAC,Cadena Dial,9459,142126021,3183916.884,https://tunein.com/embed/player/s9459/?testStreamId=e142126021&autoplay=true,,,56,aac
+https://streamingecuador.com:8006/radiocaravana,AAC,Radio Caravana,13886,202302786,101249.4611,https://tunein.com/embed/player/s13886/?testStreamId=e202302786&autoplay=true,,,19,aac
+https://stream1.redsonoraradio.net:9004/;,AAC,La Máxima,107949,128743107,484775.0433,https://tunein.com/embed/player/s107949/?testStreamId=e128743107&autoplay=true,,,40,aac
+https://edge7.audioxi.com/TDAAC?aw_0_1st.playerId=BMIE_TuneIn,AAC,Today FM,15099,199811267,1429145.268,https://tunein.com/embed/player/s15099/?testStreamId=e199811267&autoplay=true,,,63,aac
+https://router.xdevel.com/audio4s975355-254/stream/icecast.audio,AAC,Radio Bruno,63651,196722123,426555.9908,https://tunein.com/embed/player/s63651/?testStreamId=e196722123&autoplay=true,,,95,aac
+https://ais-sa1.streamon.fm/7097_32k.aac,AAC,Rock 94,31230,196897303,120956.6917,https://tunein.com/embed/player/s31230/?testStreamId=e196897303&autoplay=true,,,94,aac
+https://stream.rcs.revma.com/prfmwmwy768uv,AAC,Polish Radio London,54018,187731400,520879.825,https://tunein.com/embed/player/s54018/?testStreamId=e187731400&autoplay=true,,,112,aac
+https://shonanbeachfm.out.airtime.pro/shonanbeachfm_c,AAC,湘南ビーチFM,8138,190061017,1523392.55,https://tunein.com/embed/player/s8138/?testStreamId=e190061017&autoplay=true,,,192,aac
+https://wfmt.streamguys1.com/main-source,AAC,WFMT,28807,176103259,252741.0756,https://tunein.com/embed/player/s28807/?testStreamId=e176103259&autoplay=true,,,256,aac
+https://woodward-radio.streamb.live/SB00051?args=tunein_01,AAC,The Score WI,18813,189679002,70505.26333,https://tunein.com/embed/player/s18813/?testStreamId=e189679002&autoplay=true,,,200,aac
+http://stream-tx3.radioparadise.com/aac-320,AAC,Radio Paradise,13606,99790395,894573.63,https://tunein.com/embed/player/s13606/?testStreamId=e99790395&autoplay=true,,,320,aac
+https://mdr-284320-0.sslcast.mdr.de/mdr/284320/0/aac/high/stream.aac?ar-distributor=f0a1,AAC,MDR JUMP,6634,151187732,320737.1444,https://tunein.com/embed/player/s6634/?testStreamId=e151187732&autoplay=true,,,72,aac
+http://playerservices.streamtheworld.com/pls/WXNTAMAAC.pls,AAC,CBS Sports 1430,24032,113092121,211065.8903,https://tunein.com/embed/player/s24032/?testStreamId=e113092121&autoplay=true,,,80,aac
+https://s5.voscast.com:10555/stream,Ogg Vorbis,Radio Garzel,213157,169766926,7464.086667,https://tunein.com/embed/player/s213157/?testStreamId=e169766926&autoplay=true,,,48,ogg

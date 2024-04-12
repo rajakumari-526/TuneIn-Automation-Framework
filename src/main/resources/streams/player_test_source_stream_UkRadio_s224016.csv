@@ -1,0 +1,2 @@
+effectiveurl,media_type,station_name,station_no,stream_no,hours,player_url,exception_string,url_tune_ashx_err_msg,bitrate_tune_ashx,media_type_tune_ashx
+http://opportunity.shoutca.st:8068/,MP3,UK Radio,224016,206780948,,https://tunein.com/embed/player/s224016/?testStreamId=e206780948&autoplay=true,,,128,mp3

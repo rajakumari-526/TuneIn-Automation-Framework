@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="TuneIn iOS Stream Test" parallel="none" preserve-order="true">
+    <test name="DeviceUnderTest">
+        <parameter name="appiumPort" value="4970"/>
+        <classes>
+            <class name="com.tunein.playback.tests.StreamTest">
+                <methods>
+                    <include name="testStreams"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

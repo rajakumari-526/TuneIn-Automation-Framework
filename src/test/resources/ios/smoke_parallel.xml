@@ -1,0 +1,37 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TuneIn iOS Smoke" parallel="tests" thread-count="2" verbose="1" preserve-order="true">
+    <listeners>
+        <listener class-name="com.tunein.mobile.listeners.retrystrategy.RetryListener"/>
+    </listeners>
+    <test name="FirstDevice">
+        <parameter name="appiumPort" value="4954"/>
+        <groups>
+            <run>
+                <include name="smoke"/>
+                <exclude name="ignore"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.tunein.mobile.tests.ios.contentprofile.IosContentProfileTest"/>
+            <class name="com.tunein.mobile.tests.ios.authentication.IosSignUpTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingGeneralTest"/>
+        </classes>
+    </test>
+    <test name="SecondDevice">
+        <parameter name="appiumPort" value="4955"/>
+        <groups>
+            <run>
+                <include name="smoke"/>
+                <exclude name="ignore"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.tunein.mobile.tests.ios.browsies.IosBrowsiesTest"/>
+            <class name="com.tunein.mobile.tests.ios.authentication.IosSignInSignOutTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingButtonFunctionalityTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosCarModeTest"/>
+            <class name="com.tunein.mobile.tests.ios.search.IosSearchTest"/>
+        </classes>
+    </test>
+</suite>

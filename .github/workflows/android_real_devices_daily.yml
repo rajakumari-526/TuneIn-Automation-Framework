@@ -1,0 +1,175 @@
+name: Android Daily Run (Real Devices)
+on:
+#  schedule:
+#    - cron:  '00 2 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      udid:
+        required: true
+        description: 'Device udid'
+        default: 'R52T707D1YX'
+      headspin_host:
+        required: true
+        description: 'Headspin host'
+        default: 'dev-us-sny-3.headspin.io:7008'
+      suite_name:
+        required: true
+        description: 'Suite name'
+        default: 'daily_real_device'
+env:
+  BITRISE_ANDROID_APP_SLUG: '783ace2f5373a9a0'
+  BITRISE_API_TOKEN: ${{ secrets.BITRISE_API_TOKEN }}
+  REPORT_PORTAL_TOKEN: ${{ secrets.REPORT_PORTAL_TOKEN }}
+  APK_BUILD_PATH: '/Users/serviceaccount/Apps/Android/Daily/tunein.apk'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run_daily_tests:
+    runs-on: pr_runner
+    timeout-minutes: 230
+    if: always()
+    name: Run Android Daily Tests (Real Devices).
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get Last Bitrise Build URL
+        id: bitrise-build
+        run: |
+          BITRISE_BUILD_SLUG=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_ANDROID_APP_SLUG}}/builds?sort_by=running_first&workflow=daily&branch=master&status=1&limit=1" -H "accept: application/json" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" | jq -r '.data[] | .slug')
+          echo $BITRISE_BUILD_SLUG
+          ARTIFACT_SLUG=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_ANDROID_APP_SLUG}}/builds/$BITRISE_BUILD_SLUG/artifacts" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data[]|  select(.title | startswith("tunein-googleFlavor-tuneinFreeTest-fat-debug")) |.slug')
+          echo $ARTIFACT_SLUG
+          echo "APP_URL=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_ANDROID_APP_SLUG}}/builds/$BITRISE_BUILD_SLUG/artifacts/$ARTIFACT_SLUG" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data | .expiring_download_url' )" >> $GITHUB_OUTPUT
+          echo $APP_URL
+          echo "PUBLIC_APP_URL=$(curl -X GET "https://api.bitrise.io/v0.1/apps/${{env.BITRISE_ANDROID_APP_SLUG}}/builds/$BITRISE_BUILD_SLUG/artifacts/$ARTIFACT_SLUG" -H "Authorization: ${{env.BITRISE_API_TOKEN}}" -H "accept: application/json" | jq -r '.data | .public_install_page_url' )" >> $GITHUB_OUTPUT
+          echo $PUBLIC_APP_URL
+      - name: Download App file
+        run: curl "${{steps.bitrise-build.outputs.APP_URL}}" --output "${{env.APK_BUILD_PATH}}"
+      - name: Run Gradle Script
+        run: |
+          gradle clean runTest \
+            -Dandroid.useAndroidX=true \
+            -Dandroid.enableJetifier=true \
+            -Dorg.gradle.parallel=true \
+            -Dmobile.os=android \
+            -Dappium.real.device.uninstall.tunein.app="true"
+            -Dappium.real.device.install.tunein.app="true"
+            -Dstore.rp.url.in.file=true \
+            -Dorg.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk-15.0.2.jdk/Contents/Home \
+            -Dudid="${{ github.event.inputs.udid }}" \
+            -Dtest.on.real.devices=true \
+            -Dappium.stream.headspin.token="${{ env.HEADSPIN_TOKEN }}" \
+            -Dheadspin.android.host="${{ github.event.inputs.headspin_host }}"
+            -Dheadspin.app.path="${{ env.APK_BUILD_PATH }}" \
+            -Dappium.start.retry.number=5 \
+            -Dsuite=${{ github.event.inputs.suite_name }} \
+            -Drp.enable=true \
+            -Drp.launch=ANDROID_Daily_Test_Run_Real_Devices \
+            -Delement.visible.timeout.seconds=10 \
+            -Delement.wait.long.timeout.seconds=40 \
+            -Dpage.ready.timeout.seconds=25 \
+            -Delement.wait.very.short.timeout.seconds=6 \
+            -Dappium.headless.mode=true \
+            -Dappium.log.level=info \
+            -Delement.wait.medium.timeout.seconds=20 \
+            -Dcustom.wait.timeout.milliseconds=20000 \
+            -Delement.wait.very.short.timeout.seconds=5 \
+            --info --configure-on-demand
+      - name: Get Report Portal URL
+        if: always()
+        id: report_portal_url
+        run: echo "RP_URL=$(cat android_report_portal_launch_id.txt)" >> $GITHUB_OUTPUT
+      - name: Get Report Portal ID
+        if: always()
+        id: report_portal_id
+        run: echo "REPORT_PORTAL_ID=$( echo ${{steps.report_portal_url.outputs.RP_URL}} | sed 's/.*all//' | cut -d '/' -f2-)" >> $GITHUB_OUTPUT
+      - name: Get Total Number of tests
+        if: always()
+        id: tests_total_number
+        run: |
+          echo "TESTS_TOTAL_NUMBER=$(curl -X GET "https://tunein.reportportal.io/api/v1/mobile_automation/launch/uuid/${{steps.report_portal_id.outputs.REPORT_PORTAL_ID}}" -H "accept: application/json" -H "Authorization: bearer ${{env.REPORT_PORTAL_TOKEN}}" | jq -r ' .statistics | .executions | {total} | .total')" >> $GITHUB_OUTPUT
+      - name: Get Passed Number of tests
+        if: always()
+        id: tests_passed_number
+        run: |
+          echo "TESTS_PASSED_NUMBER=$(curl -X GET "https://tunein.reportportal.io/api/v1/mobile_automation/launch/uuid/${{steps.report_portal_id.outputs.REPORT_PORTAL_ID}}" -H "accept: application/json" -H "Authorization: bearer ${{env.REPORT_PORTAL_TOKEN}}" | jq -r ' .statistics | .executions | {passed} | .passed')" >> $GITHUB_OUTPUT
+      - name: Get Failed Number of tests
+        if: always()
+        id: tests_failed_number
+        run: |
+          echo "TESTS_FAILED_NUMBER=$(curl -X GET "https://tunein.reportportal.io/api/v1/mobile_automation/launch/uuid/${{steps.report_portal_id.outputs.REPORT_PORTAL_ID}}" -H "accept: application/json" -H "Authorization: bearer ${{env.REPORT_PORTAL_TOKEN}}" | jq -r ' .statistics | .executions | {failed} | .failed')" >> $GITHUB_OUTPUT
+      - name: Get Skipped Number of tests
+        if: always()
+        id: tests_skipped_number
+        run: |
+          echo "TESTS_SKIPPED_NUMBER=$(curl -X GET "https://tunein.reportportal.io/api/v1/mobile_automation/launch/uuid/${{steps.report_portal_id.outputs.REPORT_PORTAL_ID}}" -H "accept: application/json" -H "Authorization: bearer ${{env.REPORT_PORTAL_TOKEN}}" | jq -r ' .statistics | .executions | {skipped} | .skipped')" >> $GITHUB_OUTPUT
+      - name: Define if run is failed
+        if: always()
+        id: is_run_failed
+        run: echo "FAILED_CODE=$( if (( ${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}} == null )); then echo '0'; elif (( ${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}} > 0 )); then echo '1'; else echo '0'; fi)" >> $GITHUB_OUTPUT
+      - name: Set block color
+        if: always()
+        id: color
+        run: echo "COLOR=$( if (( ${{steps.is_run_failed.outputs.FAILED_CODE }} == 1)); then echo 'danger'; else echo 'good'; fi)" >> $GITHUB_OUTPUT
+      - name: Define message
+        if: always()
+        id: title
+        run: |
+          echo "RESULT_MESSAGE=$( if (( ${{steps.is_run_failed.outputs.FAILED_CODE }} == 1)); then echo ':octagonal_sign: *Testing Failed*'; else echo ':white_check_mark: *Testing Passed*'; fi)" >> $GITHUB_OUTPUT
+      - name: Send GitHub Action trigger data to Slack workflow
+        if: always()
+        id: slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: 'C01RZC085C1'
+          payload: |
+            {
+            "attachments": 
+            [
+             { "mrkdwn_in": [ "text","pretext"],
+             "pretext": ":robot_face: Android Daily Test Results (Real Devices) \n ${{steps.title.outputs.RESULT_MESSAGE}}",
+             "color": "${{steps.color.outputs.COLOR}}",
+             "title": " ",
+             "fields": [
+                         {
+                          "title": "*Total number:*",
+                          "value": "${{steps.tests_total_number.outputs.TESTS_TOTAL_NUMBER}}",
+                          "short": true
+                         },
+                         {
+                          "title": "*Passed:*",
+                          "value": "${{steps.tests_passed_number.outputs.TESTS_PASSED_NUMBER}}",
+                          "short": true
+                         },
+                         {
+                          "title": "*Failed:*",
+                          "value": "${{steps.tests_failed_number.outputs.TESTS_FAILED_NUMBER}}",
+                          "short": true
+                         },
+                         {
+                          "title": "*Skipped:*",
+                          "value": "${{steps.tests_skipped_number.outputs.TESTS_SKIPPED_NUMBER}}",
+                          "short": true
+                         }
+                        ],
+               "actions": [
+                          {
+                            "name": "reportportal",
+                            "text": "ReportPortal",
+                            "type": "button",
+                            "url": "${{steps.report_portal_url.outputs.RP_URL}}"
+                          },
+                          {
+                            "name": "appurl",
+                            "text": "Download App",
+                            "type": "button",
+                            "url": "${{steps.bitrise-build.outputs.PUBLIC_APP_URL}}"
+                          }
+                          ]
+                     }
+              ]
+             }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

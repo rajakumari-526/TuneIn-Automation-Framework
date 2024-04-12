@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TuneIn iOS Smoke" parallel="tests" thread-count="1" verbose="1" preserve-order="true">
+    <listeners>
+        <listener class-name="com.tunein.mobile.listeners.retrystrategy.RetryListener"/>
+    </listeners>
+    <test name="FirstDevice">
+        <parameter name="appiumPort" value="4954"/>
+        <classes>
+            <class name="com.tunein.mobile.tests.ios.contentprofile.IosContentProfileTest">
+                <methods>
+                    <include name="testEpisodeListening"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

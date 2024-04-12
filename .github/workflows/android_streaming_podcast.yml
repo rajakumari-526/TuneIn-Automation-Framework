@@ -1,0 +1,121 @@
+name: Android Podcast Streaming Test
+on:
+  # schedule:
+  #  - cron:  '0 */2 * * *'
+
+  workflow_dispatch:
+    inputs:
+      udid:
+        required: true
+        description: 'Device udid'
+        default: 'R5CT90RF03W'
+      duration:
+        required: true
+        description: 'Test duration'
+        default: '3600'
+      premium:
+        required: true
+        description: 'Number of premium users per test'
+        default: '0'
+      network:
+        required: true
+        description: 'Capture network traffic'
+        default: 'true'
+      name:
+        required: false
+        description: 'Podcast name (e.g. Stuff you should know)'
+      id:
+        required: false
+        description: 'Episode guideId (e.g. 283042253)'
+      owner:
+        required: true
+        description: 'Name of the team member'
+env:
+  HEADSPIN_TOKEN: ${{ secrets.HEADSPIN_TOKEN }}
+  PARALLEL_TEST: 'stream_test_parallel'
+  SINGLE_TEST: 'stream_test_one_device'
+  STREAMS_JSON_PATH: '/Users/serviceaccount/'
+  STREAMS_JSON_LOCAL_PATH: '/Users/serviceaccount/Streams.json'
+  CURRENT_DATE_FORMAT: 'YYYY_MM_DD_HH_mm_ss_SSS'
+
+jobs:
+  run_tests:
+    runs-on: playback_testing
+    name: Run Streaming Tests
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set-up current date format
+        id: set_date_format
+        uses: Kaven-Universe/github-action-current-date-time@v1
+        with:
+          format: ${{ env.CURRENT_DATE_FORMAT }}
+      - name: Copy and rename Streams.json file
+        # Add conditional (if: ${{ steps.should_run.outputs.RUN_TEST  == 'true'}})
+        id: create_streams_json_path
+        run: |
+          UPDATED_FILE_NAME="Streams_${{ steps.set_date_format.outputs.time }}.json"
+          UPDATED_FILE_PATH="${{ env.STREAMS_JSON_PATH }}"$UPDATED_FILE_NAME
+          echo "STREAM_JSON_FILE_PATH=$UPDATED_FILE_PATH" >> $GITHUB_OUTPUT;
+
+          echo "Current Streams.json file path: ${{ env.STREAMS_JSON_LOCAL_PATH }}"
+          echo "Updated Streams.json file path:" $UPDATED_FILE_PATH
+
+          cp "${{ env.STREAMS_JSON_LOCAL_PATH }}" $UPDATED_FILE_PATH
+      - name: Run Gradle Script
+        id: run_gradle_script
+        run: |
+          ### is on-demand UDID variable set?
+          udid_list="${{ github.event.inputs.udid }}" >> $GITHUB_OUTPUT
+          echo "list of udid(s) set in the inputs.udid variable is ${udid_list}"
+
+          udid_number=$(echo "${udid_list}" | tr ',' '\n' | WC -l) >> $GITHUB_OUTPUT
+          ### remove trailing spaces from udid_number
+          udid_number=$(echo "${udid_number//[[:blank:]]/}")
+          echo "number of udid count set in inputs.udid - ${udid_number}"
+
+          if [ ! -z ${udid_list} ];
+          then
+            if [ ${udid_number} -eq 1 ]; then suite=${{ env.SINGLE_TEST }} >> $GITHUB_OUTPUT; else suite=${{ env.PARALLEL_TEST }} >> $GITHUB_OUTPUT; fi
+          else
+            suite=${{ env.SINGLE_TEST }} >> $GITHUB_OUTPUT
+          fi
+
+          echo "test suite in use ${suite}"
+
+          # run test
+          gradle clean runTest \
+            -Dmobile.os=android \
+            -Dstore.rp.url.in.file=true \
+            -Dsuite="${suite}" \
+            -Dorg.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home \
+            -Dappium.stream.test.enabled="true" \
+            -Dappium.stream.headspin.token="${{ env.HEADSPIN_TOKEN }}" \
+            -Dappium.stream.monitor.duration="${{ github.event.inputs.duration || '3600' }}" \
+            -Dudid="${{ github.event.inputs.udid || 'R5CT90RF03W' }}" \
+            -Dappium.premium.user.test="${{ github.event.inputs.premium || '0' }}" \
+            -Dappium.stream.headspin.capture.network="${{ github.event.inputs.network || 'true' }}" \
+            -Dappium.stream.write.to.file="false" \
+            -Dappium.real.device.uninstall.tunein.app="false" \
+            -Dappium.real.device.install.tunein.app="false" \
+            -Dappium.stream.headspin.disable.http2="true" \
+            -Dappium.stream.station.name="${{ github.event.inputs.name || 'Stuff you should know' }}" \
+            -Dappium.stream.station.id="${{ github.event.inputs.id || '283042253' }}" \
+            -Dappium.stream.owner.name="${{ github.event.inputs.owner || 'Podcast Testing (DROID-15656)' }}" \
+            -Dappium.stream.local.json.file.path="${{ steps.create_streams_json_path.outputs.STREAM_JSON_FILE_PATH || env.STREAMS_JSON_PATH }}" \
+            -Drp.enable=true \
+            -Drp.project=playback_testing \
+            -Drp.launch=ANDROID_PLAYBACK_TESTING \
+            -Dappium.log.level=debug \
+            -Dtest.on.real.devices=true \
+            --debug \
+            --configure-on-demand
+      - name: Delete Streams.json file
+        if: always()
+        # Add conditional (if: ${{ steps.should_run.outputs.RUN_TEST  == 'true'}})
+        id: delete_streams_json_file
+        run: |
+          rm "${{ steps.create_streams_json_path.outputs.STREAM_JSON_FILE_PATH }}"
+      - name: Get Report Portal URL
+        if: always()
+        id: report_portal_url
+        run: echo $(cat android_report_portal_launch_id.txt)

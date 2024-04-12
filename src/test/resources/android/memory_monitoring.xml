@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TuneIn Android Daily Memory Monitoring Tests" parallel="tests" thread-count="1" verbose="1" preserve-order="true">
+    <test name="DeviceOne">
+        <classes>
+            <class name="com.tunein.stability.tests.android.AndroidMonitoringTest">
+                <methods>
+                    <include name="testMonitorDeviceMemory"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,95 @@
+group 'com.tunein.automation'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java-library'
+
+def toolVersions = [
+        aeonbitsVersion     : '1.0.12',
+        testngVersion       : '7.8.0',
+        selenideAppiumVersion : '7.0.4',
+        lombokVersion       : '1.18.22',
+        assertjVersion      : '3.23.1',
+        selenideTestng      : '7.0.4',
+        guiceVersion        : '7.0.0',
+        slf4jVersion        : '2.0.6',
+        converterGsonVersion: '2.9.0',
+        googleJavaFormatVersion : '1.15.0',
+        reportPortalTestNG : '5.3.1',
+        logbackVersion : '1.4.1',
+        reportPortalLogbackVersion : '5.1.6',
+        commonsIOVersion : '2.11.0',
+        opencsvVersion : '5.6',
+        mitmproxy : '2.0.1',
+        okhttp3Version : '4.11.0',
+        okhttp3VersionLogging: '4.11.0',
+        gsonVersion : '2.10.1',
+        aspectjweaverVersion : '1.9.20.1',
+        harReaderVersion : '2.2.1'
+]
+
+repositories {
+    mavenCentral()
+}
+
+[compileJava, compileTestJava]*.options.collect { options -> options.encoding = 'UTF-8' }
+
+dependencies {
+    api "org.aeonbits.owner:owner:${toolVersions.aeonbitsVersion}",
+            "org.testng:testng:${toolVersions.testngVersion}",
+            "org.assertj:assertj-core:${toolVersions.assertjVersion}",
+            "org.projectlombok:lombok:${toolVersions.lombokVersion}",
+            "com.codeborne:selenide-testng:${toolVersions.selenideTestng}",
+            "com.google.inject:guice:${toolVersions.guiceVersion}",
+            "com.google.inject.extensions:guice-assistedinject:${toolVersions.guiceVersion}",
+            "org.slf4j:slf4j-simple:${toolVersions.slf4jVersion}",
+            "com.squareup.retrofit2:converter-gson:${toolVersions.converterGsonVersion}",
+            "com.google.googlejavaformat:google-java-format:${toolVersions.googleJavaFormatVersion}",
+            "ch.qos.logback:logback-classic:${toolVersions.logbackVersion}",
+            "com.epam.reportportal:logger-java-logback:${toolVersions.reportPortalLogbackVersion}",
+            "commons-io:commons-io:${toolVersions.commonsIOVersion}",
+            "com.epam.reportportal:agent-java-testng:${toolVersions.reportPortalTestNG}",
+            "com.opencsv:opencsv:${toolVersions.opencsvVersion}",
+            "io.appium:mitmproxy-java:${toolVersions.mitmproxy}",
+            "com.codeborne:selenide-appium:${toolVersions.selenideAppiumVersion}",
+            "com.squareup.okhttp3:okhttp:${toolVersions.okhttp3Version}",
+            "com.squareup.okhttp3:logging-interceptor:${toolVersions.okhttp3VersionLogging}",
+            "com.google.code.gson:gson:${toolVersions.converterGsonVersion}",
+            "org.aspectj:aspectjweaver:${toolVersions.aspectjweaverVersion}",
+            "de.sstoehr:har-reader:${toolVersions.harReaderVersion}"
+
+
+    annotationProcessor "org.projectlombok:lombok:${toolVersions.lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${toolVersions.lombokVersion}"
+}
+
+task runTest(type: Test) {
+    maxHeapSize = "3g" // max
+    doFirst {
+        def weaver = configurations.testRuntimeClasspath.find { it.name.contains("aspectjweaver") }
+        jvmArgs += "-javaagent:$weaver"
+    }
+    systemProperties(System.getProperties())
+    useTestNG {
+        setConfigFailurePolicy("continue")
+        testLogging.showStandardStreams = true
+        useDefaultListeners = false
+        Map<String, Object> variables = new HashMap<>()
+        variables.putAll(getEnvironment())
+        variables.putAll(getSystemProperties())
+        def testGroups = variables.get("test.groups")
+        def prTests = variables.get("pr.tests")
+        suites 'src/test/resources/' + variables.get("mobile.os") + '/' + variables.get("suite") + '.xml'
+        if (testGroups && !testGroups.empty) {
+            def groups = testGroups.split(',')
+            includeGroups groups
+        }
+        if (prTests && !prTests.empty) {
+            def tests = prTests.replaceAll("\\s","").split(',')
+            filter {
+                for(test in tests) {
+                    includeTestsMatching '*.' + test
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,2 @@
+effectiveurl,media_type,station_name,station_no,stream_no,hours,player_url,exception_string,url_tune_ashx_err_msg,bitrate_tune_ashx,media_type_tune_ashx
+https://dattavolt.com/8150/stream,MP3,LA SUPREMA ESTACIÓN,110106,64025025,762637.8308,https://tunein.com/embed/player/s110106/?testStreamId=e64025025&autoplay=true,,,80,mp3

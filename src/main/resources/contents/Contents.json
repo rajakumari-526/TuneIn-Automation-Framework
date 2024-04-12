@@ -1,0 +1,1078 @@
+[
+  {
+    "streamStationKQED": {
+      "searchQuery": "aa6-s34804",
+      "streamName": "KQED-FM",
+      "streamSlogan": "KQED-FM",
+      "streamProfileDeepLink": "tunein://profile/s34804",
+      "streamTuneDeepLink": "tunein://tune/s34804",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["HLS", "MP3"]
+    }
+  },
+  {
+    "streamStationWithoutAds": {
+      "searchQuery": "aa6-s24941",
+      "streamName": "BBC Radio 3",
+      "streamSlogan": "Radio 3 in Concert",
+      "streamProfileDeepLink": "tunein://profile/s24941",
+      "streamTuneDeepLink": "tunein://tune/s24941",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["HLS"]
+    }
+  },
+  {
+    "streamStationUNiCC": {
+      "searchQuery": "aa6-s97189",
+      "streamName": "Radio UNiCC",
+      "streamSlogan": "einzig, nicht, artig ...",
+      "streamProfileDeepLink": "tunein://profile/s97189",
+      "streamTuneDeepLink": "tunein://tune/s97189",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3", "AAC"]
+    }
+  },
+  {
+    "streamPodcastMarketplace": {
+      "searchQuery": "aa6-p88",
+      "streamName": "Marketplace",
+      "streamSlogan": "American Public Media",
+      "streamProfileDeepLink": "tunein://profile/p88",
+      "streamTuneDeepLink": "tunein://tune/t363208259",
+      "streamType": "podcast",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "podcast",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationTodaysHits": {
+      "searchQuery": "aa6-s257960",
+      "streamName": "Today's Hits",
+      "streamSlogan": "US",
+      "streamProfileDeepLink": "tunein://profile/s257960",
+      "streamTuneDeepLink": "tunein://tune/s257960",
+      "streamType": "ownedAndOperated",
+      "streamHasShows": false,
+      "isPremium": true,
+      "contentProfileType": "premiumStation",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationTodaysHitsWithAds": {
+      "searchQuery": "aa6-s242677",
+      "streamName": "Today's Hits",
+      "streamSlogan": "The chart-topping hits you love, updated every single day",
+      "streamProfileDeepLink": "tunein://profile/s242677",
+      "streamTuneDeepLink": "tunein://tune/s242677",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationClassicRockHits": {
+      "searchQuery": "aa6-s249994",
+      "streamName": "Classic Rock Hits",
+      "streamSlogan": "US",
+      "streamProfileDeepLink": "tunein://profile/s249994",
+      "streamTuneDeepLink": "tunein://tune/s249994",
+      "streamType": "ownedAndOperated",
+      "streamHasShows": false,
+      "isPremium": true,
+      "contentProfileType": "premiumStation",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationChristianHits": {
+      "searchQuery": "aa6-s249983",
+      "streamName": "Christian Hits",
+      "streamSlogan": "US",
+      "streamProfileDeepLink": "tunein://profile/s249983",
+      "streamTuneDeepLink": "tunein://tune/s249983",
+      "streamType": "ownedAndOperated",
+      "streamHasShows": false,
+      "isPremium": true,
+      "contentProfileType": "premiumStation",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamPodcastProgressiveVoices": {
+      "searchQuery": "aa6-p864998",
+      "streamName": "Progressive Voices",
+      "streamSlogan": "The best progressive talk right here, on demand. Always Progressive, Always On!",
+      "streamProfileDeepLink": "tunein://profile/p864998",
+      "streamTuneDeepLink": "tunein://tune/t139218570",
+      "streamType": "podcast",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "podcast",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamPodcastNurseTalk": {
+      "searchQuery": "aa6-p1140896",
+      "streamName": "Nurse Talk",
+      "streamSlogan": "Podcast by Nurse Talk",
+      "streamProfileDeepLink": "tunein://profile/p1140896",
+      "streamTuneDeepLink": "tunein://tune/t251021201",
+      "streamType": "premiumPodcast",
+      "streamHasShows": false,
+      "isPremium": true,
+      "contentProfileType": "premiumPodcast",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationCNN": {
+      "searchQuery": "aa6-s20407",
+      "streamName": "CNN",
+      "streamSlogan": "CNN",
+      "streamProfileDeepLink": "tunein://profile/s20407",
+      "streamTuneDeepLink": "tunein://tune/s20407",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "news",
+      "streamFormat": ["HLS"]
+    }
+  },
+  {
+    "streamStationLaJefa": {
+      "searchQuery": "aa6-s1076",
+      "streamName": "Radio La Jefa",
+      "streamSlogan": "La Jefa",
+      "streamProfileDeepLink": "tunein://profile/s1076",
+      "streamTuneDeepLink": "tunein://tune/s1076",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["HLS", "FLASH", "AAC", "QT"]
+    }
+  },
+  {
+    "streamStationWithMP3Format": {
+      "searchQuery": "aa6-s24791",
+      "streamName": "WYPR",
+      "streamSlogan": "On Point | Podcast",
+      "streamProfileDeepLink": "tunein://profile/s24791",
+      "streamTuneDeepLink": "tunein://tune/s24791",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationCBSMusicFM": {
+      "searchQuery": "aa6-s14584",
+      "streamName": "CBS Music FM",
+      "streamSlogan": "Between dream and music",
+      "streamProfileDeepLink": "tunein://profile/s14584",
+      "streamTuneDeepLink": "tunein://tune/s14584",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["HLS", "QT"]
+    }
+  },
+  {
+    "streamStationFMCordoba": {
+      "searchQuery": "aa6-s111072",
+      "streamName": "FM Córdoba",
+      "streamSlogan": "Subí Que Te Llevo",
+      "streamProfileDeepLink": "tunein://profile/s111072",
+      "streamTuneDeepLink": "tunein://tune/s111072",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3", "WMA", "AAC"]
+    }
+  },
+  {
+    "streamStationRadioX": {
+      "searchQuery": "aa6-s15444",
+      "streamName": "Radio X",
+      "streamSlogan": "Sei dabei im Club 94.5",
+      "streamProfileDeepLink": "tunein://profile/s15444",
+      "streamTuneDeepLink": "tunein://tune/s15444",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3", "WMA", "OGG"]
+    }
+  },
+  {
+    "streamStationRadio538": {
+      "searchQuery": "aa6-s6712",
+      "streamName": "538",
+      "streamSlogan": "Mark Labrand",
+      "streamProfileDeepLink": "tunein://profile/s6712",
+      "streamTuneDeepLink": "tunein://tune/s6712",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationAAC": {
+      "searchQuery": "aa6-s6515",
+      "streamName": "Gradski Radio Trogir",
+      "streamSlogan": "Samo dobra glazba na Gradskom",
+      "streamProfileDeepLink": "tunein://profile/s6515",
+      "streamTuneDeepLink": "tunein://tune/s6515",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["AAC"]
+    }
+  },
+  {
+    "streamStationBBCRadio5": {
+      "searchQuery": "aa6-s24943",
+      "streamName": "BBC Radio 5 Live",
+      "streamSlogan": "Live news - live sport",
+      "streamProfileDeepLink": "tunein://profile/s24943",
+      "streamTuneDeepLink": "tunein://tune/s24943",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["HLS"]
+    }
+  },
+  {
+    "streamStationRadioBBSFM": {
+      "searchQuery": "aa6-s2754",
+      "streamName": "BBS FM",
+      "streamSlogan": "Lecture of Buddhism",
+      "streamProfileDeepLink": "tunein://profile/s2754",
+      "streamTuneDeepLink": "tunein://tune/s2754",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["FLASH"]
+    }
+  },
+  {
+    "streamGameReplay": {
+      "searchQuery": "aa6-p827549",
+      "streamName": "Colorado Avalanche Game Replays",
+      "streamSlogan": "Colorado Avalanche Game Replays",
+      "streamProfileDeepLink": "tunein://profile/p827549",
+      "streamTuneDeepLink": "tunein://tune/t340550695",
+      "streamType": "gameReplay",
+      "streamHasShows": false,
+      "isPremium": true,
+      "contentProfileType": "sport",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationWithMusicAAC": {
+      "searchQuery": "aa6-s28063",
+      "streamName": "Cat Country 98.1",
+      "streamSlogan": "Courtney Kelley",
+      "streamProfileDeepLink": "tunein://profile/s28063",
+      "streamTuneDeepLink": "tunein://tune/s28063",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["AAC"]
+    }
+  },
+  {
+    "streamStationWithActiveShow": {
+      "searchQuery": "aa6-p3",
+      "streamName": "Morning Edition",
+      "streamSlogan": "Up-to-the-minute news, background analysis, commentary, and coverage of arts and sports. That unique mix of news and culture has made this enduring program a national favorite.",
+      "streamProfileDeepLink": "tunein://profile/p3",
+      "streamTuneDeepLink": "",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "show",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationChristmasMusic": {
+      "searchQuery": "aa6-p941588",
+      "streamName": "Christmas  Music 24/7",
+      "streamSlogan": "Mexico",
+      "streamProfileDeepLink": "tunein://profile/p941588",
+      "streamTuneDeepLink": "tunein://tune/s258397",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "show",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamNewsPremiumFoxNews": {
+      "searchQuery": "aa6-s20431",
+      "streamName": "FOX News Radio",
+      "streamSlogan": "New York, NY",
+      "streamProfileDeepLink": "tunein://profile/s20431",
+      "streamTuneDeepLink": "tunein://tune/s20431",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": true,
+      "contentProfileType": "premiumNews",
+      "streamFormat": ["HLS"]
+    }
+  },
+  {
+    "streamStationRestricted": {
+      "searchQuery": "aa6-s310326",
+      "streamName": "BILD Live",
+      "streamSlogan": "Deutschlands erfolgreichste Medienmarke jetzt auch 24/7 als Audio-Livestream!",
+      "streamProfileDeepLink": "tunein://profile/s310326",
+      "streamTuneDeepLink": "tunein://tune/s310326",
+      "streamType": "restricted",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "restricted",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamFreeShortShortPodcast": {
+      "searchQuery": "aa6-p959058",
+      "streamName": "Daily Easy English Expression Podcast",
+      "streamSlogan": "Every day I will introduce a common expression or word that YOU NEED TO KNOW!! This podcast is for English learners around the world.",
+      "streamProfileDeepLink": "tunein://profile/p959058",
+      "streamTuneDeepLink": "tunein://tune/t139159830",
+      "streamType": "podcast",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "podcast",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamSecondPremiumOwnAndOperated": {
+      "searchQuery": "aa6-s257963",
+      "streamName": "Country Roads",
+      "streamSlogan": "US",
+      "streamProfileDeepLink": "tunein://profile/s257963",
+      "streamTuneDeepLink": "tunein://tune/s257963",
+      "streamType": "ownedAndOperated",
+      "streamHasShows": false,
+      "isPremium": true,
+      "contentProfileType": "premiumStation",
+      "streamFormat": ["MP3", "AAC"]
+    }
+  },
+  {
+    "streamFreeStreamFromPremiumOwnAndOperated": {
+      "searchQuery": "aa6-s224628",
+      "streamName": "Country Roads",
+      "streamSlogan": "US",
+      "streamProfileDeepLink": "tunein://profile/s224628",
+      "streamTuneDeepLink": "tunein://tune/s224628",
+      "streamType": "ownedAndOperated",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "premiumStation",
+      "streamFormat": ["MP3", "AAC"]
+    }
+  },
+  {
+    "streamFreePodcastWithLongEpisode": {
+      "searchQuery": "aa6-p30095",
+      "streamName": "Mark Levin Podcast",
+      "streamSlogan": "Mark Levin is one of the hottest talk radio hosts in America. ",
+      "streamProfileDeepLink": "tunein://profile/p30095",
+      "streamTuneDeepLink": "tunein://tune/t316855607",
+      "streamType": "podcast",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "podcast",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamArtistProfileMadonna": {
+      "searchQuery": "aa6-m160369",
+      "streamName": "Madonna",
+      "streamSlogan": "Adult Hits, 80's",
+      "streamProfileDeepLink": "tunein://profile/m160369",
+      "streamTuneDeepLink": "",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "artist",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamSuggestedArtistProfile": {
+      "searchQuery": "aa6-m160369",
+      "streamName": "Madonna",
+      "streamSlogan": "80's, Top 40 & Pop Music",
+      "streamProfileDeepLink": "tunein://profile/m160369",
+      "streamTuneDeepLink": "",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "Suggestions (Artist)",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamArtistProfileDrake": {
+      "searchQuery": "aa6-m538202",
+      "streamName": "Drake",
+      "streamSlogan": "Hip Hop Music, Top 40 & Pop Music",
+      "streamProfileDeepLink": "tunein://profile/m538202",
+      "streamTuneDeepLink": "",
+      "streamType": "",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "artist",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamAlbumBedtimeStoriesByMadonna": {
+      "searchQuery": "aa6-d47084",
+      "streamName": "Bedtime-Stories",
+      "streamSlogan": "Madonna",
+      "streamProfileDeepLink": "tunein://profile/d47084",
+      "streamTuneDeepLink": "",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "album",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamShowKQEDNewsroom": {
+      "searchQuery": "aa6-p551650",
+      "streamName": "KQED Newsroom",
+      "streamSlogan": "San Francisco, CA",
+      "streamProfileDeepLink": "tunein://profile/p551650",
+      "streamTuneDeepLink": "",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "show",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamNewsPremiumAlJazeera": {
+      "searchQuery": "aa6-s273144",
+      "streamName": "Al Jazeera English (Premium)",
+      "streamSlogan": "Al Jazeera brings you the latest global news stories through our 24-hour live broadcast.",
+      "streamProfileDeepLink": "tunein://profile/s273144",
+      "streamTuneDeepLink": "tunein://tune/s273144",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": true,
+      "contentProfileType": "premiumNews",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamNewsPremiumMSNBC": {
+      "searchQuery": "aa6-s297990",
+      "streamName": "MSNBC",
+      "streamSlogan": "MSNBC Live with Alex Witt",
+      "streamProfileDeepLink": "tunein://profile/s297990",
+      "streamTuneDeepLink": "tunein://tune/s297990",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": true,
+      "contentProfileType": "premiumNews",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStarTalkRadioPodcast": {
+      "searchQuery": "aa6-p334521",
+      "streamName": "StarTalk Radio",
+      "streamSlogan": "Science, pop culture and comedy collide on StarTalk Radio! Astrophysicist and Hayden Planetarium director Neil deGrasse Tyson, his comic co-hosts, guest celebrities and scientists discuss astronomy, physics, and everything else about life in the universe. Keep Looking Up! New episodes premiere Monday nights at 7pm ET.",
+      "streamProfileDeepLink": "tunein://profile/p334521",
+      "streamTuneDeepLink": "tunein://tune/t173440723",
+      "streamType": "podcast",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "podcast",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStarTalkRadioLiveStation": {
+      "searchQuery": "aa6-s225116",
+      "streamName": "StarTalk Radio 24/7",
+      "streamSlogan": "",
+      "streamProfileDeepLink": "tunein://profile/s225116",
+      "streamTuneDeepLink": "tunein://tune/s225116",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamPodcastTheDaily": {
+      "searchQuery": "aa6-p952868",
+      "streamName": "The Daily",
+      "streamSlogan": "This is what the news should sound like. The biggest stories of our time, told by the best journalists in the world. Hosted by Michael Barbaro and Sabrina Tavernise. Twenty minutes a day, five days a week, ready by 6 a.m.",
+      "streamProfileDeepLink": "tunein://profile/p952868",
+      "streamTuneDeepLink": "tunein://tune/t206051863",
+      "streamType": "podcast",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "podcast",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "teamCategoryBaltimoreOrioles": {
+      "searchQuery": "aa6-s252297",
+      "streamName": "Baltimore Orioles",
+      "streamSlogan": "24/7 Team coverage.",
+      "streamProfileDeepLink": "tunein://profile/s252297",
+      "streamTuneDeepLink": "tunein://tune/s252297",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": true,
+      "contentProfileType": "team",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamEspnRadio": {
+      "searchQuery": "aa6-s25876",
+      "streamName": "ESPN Radio",
+      "streamSlogan": "You Know Us, We Know Sports",
+      "streamProfileDeepLink": "tunein://profile/s25876",
+      "streamTuneDeepLink": "tunein://tune/s25876",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "premiumNews",
+      "streamFormat": ["HLS"]
+    }
+  },
+  {
+    "streamPremiumPodcast": {
+      "searchQuery": "aa6-p860047",
+      "streamName": "Les 7 étapes du lâcher-prise",
+      "streamSlogan": "JSA Podcasts is your source for the latest news",
+      "streamProfileDeepLink": "tunein://profile/p860047",
+      "streamTuneDeepLink": "tunein://tune/t262012571",
+      "streamType": "premiumPodcast",
+      "streamHasShows": false,
+      "isPremium": true,
+      "contentProfileType": "premiumPodcast",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamPodcastTEDTalksDaily": {
+      "searchQuery": "aa6-p378321",
+      "streamName": "TED Talks Daily",
+      "streamSlogan": "Every weekday, TED Talks Daily",
+      "streamProfileDeepLink": "tunein://profile/p378321",
+      "streamTuneDeepLink": "tunein://tune/t264652027",
+      "streamType": "podcast",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "podcast",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamPodcastUnresolved": {
+      "searchQuery": "aa6-p883541",
+      "streamName": "Unresolved",
+      "streamSlogan": "Every day, stories unfold that have no resolution.",
+      "streamProfileDeepLink": "tunein://profile/p883541",
+      "streamTuneDeepLink": "tunein://tune/t266008755",
+      "streamType": "podcast",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "podcast",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamAudiobookGatsby": {
+      "searchQuery": "aa6-p3657524",
+      "streamName": "The Great Gatsby",
+      "streamSlogan": "When The Great Gatsby was published, commercially it was a failure but critically it was a success. It is still the most admired and well read of all Scott Fitzgerald’s novels and it is considered a handbook of the 'Jazz Age'. Scott Fitzgerald put much of himself and his life into the book. He created the character of Jay Gatsby to illustrate his own experiences of the illusory and morally bankrupt aspects of 1920s' America, and the character of Nick Carraway to show his disapproval of its destructive effects. Duration - 2h 23m. Author - F. Scott Fitzgerald. Narrator - William Roberts. Published Date - Tuesday, 31 January 2023.",
+      "streamProfileDeepLink": "tunein://profile/p3657524",
+      "streamTuneDeepLink": "tunein://tune/t270431674",
+      "streamType": "audiobook",
+      "streamHasShows": false,
+      "isPremium": true,
+      "contentProfileType": "audiobook",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamAudiobookGatsbyLastChapter": {
+      "searchQuery": "aa6-p3657524",
+      "streamName": "The Great Gatsby",
+      "streamSlogan": "When The Great Gatsby was published, commercially it was a failure but critically it was a success. It is still the most admired and well read of all Scott Fitzgerald’s novels and it is considered a handbook of the 'Jazz Age'. Scott Fitzgerald put much of himself and his life into the book. He created the character of Jay Gatsby to illustrate his own experiences of the illusory and morally bankrupt aspects of 1920s' America, and the character of Nick Carraway to show his disapproval of its destructive effects. Duration - 2h 23m. Author - F. Scott Fitzgerald. Narrator - William Roberts. Published Date - Tuesday, 31 January 2023.",
+      "streamProfileDeepLink": "tunein://profile/p3657524",
+      "streamTuneDeepLink": "tunein://tune/t270431667",
+      "streamType": "audiobook",
+      "streamHasShows": false,
+      "isPremium": true,
+      "contentProfileType": "audiobook",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamAudiobookLiar": {
+      "searchQuery": "aa6-p3577626",
+      "streamName": "The Liar's Wife",
+      "streamSlogan": "Palmer Lewis married a liar. But just how deadly are his lies? Shortly after marrying her soulmate and the birth of their son, the lies begin. First, it's the phone calls, always held in secret, always deleted from his phone. Then it's his odd disappearances and the little nagging voice in her head screaming: something is not right. When Palmer follows her gut -- and her husband -- she catches him with an unfamiliar woman in the park and in his biggest lie thus far. Learning from her past, she hatches a plan to protect herself and their child. But when her husband and son disappear one afternoon and don't return, Palmer must retrace her steps and dig deep to discover the truth before it's too late. Who is the mysterious woman her husband lied about meeting? Who knows what happened to her family? Who's lying? In this twisted psychological thriller, the better question is, who isn't? Duration - 5h 34m. Author - Kiersten Modglin. Narrator - Melissa Redmond. Published Date - Sunday, 22 January 2023. Copyright - © 2020 Kiersten Modglin ©.",
+      "streamProfileDeepLink": "tunein://profile/p3577626",
+      "streamTuneDeepLink": "tunein://tune/t268901446",
+      "streamType": "audiobook",
+      "streamHasShows": false,
+      "isPremium": true,
+      "contentProfileType": "audiobook",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamUnAvailableStation": {
+      "searchQuery": "aa6-s206794",
+      "streamName": "This American Life",
+      "streamSlogan": "This American Life",
+      "streamProfileDeepLink": "tunein://profile/s206794",
+      "streamTuneDeepLink": "tunein://tune/s206794",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["HLS", "MP3"]
+    }
+  },
+  {
+    "streamWithListenLiveOrRewindScreen": {
+      "searchQuery": "aa6-s306901",
+      "streamName": "FOX News Radio",
+      "streamTuneDeepLink": "tunein://tune/s306901",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": true,
+      "contentProfileType": "news",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamKBMRStation": {
+      "searchQuery": "aa6-s31781",
+      "streamName": "1130 KBMR",
+      "streamSlogan": "Bob Pickett",
+      "streamProfileDeepLink": "tunein://profile/s31781",
+      "streamTuneDeepLink": "tunein://tune/s31781",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["HLS", "AAC"]
+    }
+  },
+  {
+    "streamDeletedStation": {
+      "searchQuery": "aa6-s306299",
+      "streamName": "Deleted stream",
+      "streamSlogan": "",
+      "streamProfileDeepLink": "tunein://profile/s306299",
+      "streamTuneDeepLink": "tunein://tune/s306299",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationWild94": {
+      "searchQuery": "aa6-s26656",
+      "streamName": "WILD 94.9",
+      "streamSlogan": "WILD 94.9",
+      "streamProfileDeepLink": "tunein://profile/s26656",
+      "streamTuneDeepLink": "tunein://tune/s26656",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["HLS", "AAC"]
+    }
+  },
+  {
+    "streamStationWithPreroll": {
+      "searchQuery": "aa6-s1256",
+      "streamName": "Radio Cultural TGN",
+      "streamSlogan": "Himnos de Alabanza l",
+      "streamProfileDeepLink": "tunein://profile/s1256",
+      "streamTuneDeepLink": "tunein://tune/s1256",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationIMAVideo": {
+      "searchQuery": "aa6-s297990",
+      "streamName": "MSNBC",
+      "streamSlogan": "Morning Joe",
+      "streamProfileDeepLink": "tunein://profile/s297990",
+      "streamTuneDeepLink": "tunein://tune/s297990",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationAdswizzInstreamAd": {
+      "searchQuery": "aa6-s324660",
+      "streamName": "QA Adswizz Instream Test",
+      "streamSlogan": "US",
+      "streamProfileDeepLink": "tunein://profile/s324660",
+      "streamTuneDeepLink": "tunein://tune/s324660",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationAdswizzAd": {
+      "searchQuery": "aa6-s325035",
+      "streamName": "QA Adswizz Preroll TEST",
+      "streamSlogan": "US",
+      "streamProfileDeepLink": "tunein://profile/s325035",
+      "streamTuneDeepLink": "tunein://tune/s325035",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationWithMidroll": {
+      "searchQuery": "aa6-s30485",
+      "streamName": "WKXN",
+      "streamSlogan": "Roscoe Miller",
+      "streamProfileDeepLink": "tunein://profile/s30485",
+      "streamTuneDeepLink": "tunein://tune/s30485",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["AAC"]
+    }
+  },
+  {
+    "streamStationWithSwitch": {
+      "searchQuery": "aa6-s301864",
+      "streamName": "Fresh UK",
+      "streamSlogan": "Your Hit Music Station",
+      "streamProfileDeepLink": "tunein://profile/s301864",
+      "streamTuneDeepLink": "tunein://tune/s301864",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3", "AAC"]
+    }
+  },
+  {
+    "streamStationWithSwitchAdditional": {
+      "searchQuery": "aa6-s102100",
+      "streamName": "UK Country Radio",
+      "streamSlogan": "Brian Stanley Show",
+      "streamProfileDeepLink": "tunein://profile/s102100",
+      "streamTuneDeepLink": "tunein://tune/s102100",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3", "AAC"]
+    }
+  },
+  {
+    "streamStationIMAVideoSecond": {
+      "searchQuery": "aa6-s51002",
+      "streamName": "SomaFM: Drone Zone",
+      "streamSlogan": "Served best chilled, safe with most",
+      "streamProfileDeepLink": "tunein://profile/s51002",
+      "streamTuneDeepLink": "tunein://tune/s51002",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3", "AAC"]
+    }
+  },
+  {
+    "streamStationIMAVideoThird": {
+      "searchQuery": "aa6-s67862",
+      "streamName": "Fun Kids",
+      "streamSlogan": "Non-Stop Fun Kids",
+      "streamProfileDeepLink": "tunein://profile/s67862",
+      "streamTuneDeepLink": "tunein://tune/s67862",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationInstreamGamAd": {
+      "searchQuery": "aa6-s325037",
+      "streamName": "QA GAM Instream Test",
+      "streamSlogan": "US",
+      "streamProfileDeepLink": "tunein://profile/s325037",
+      "streamTuneDeepLink": "tunein://tune/s325037",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationWithTwoImaAudioPrerolls": {
+      "searchQuery": "aa6-s325032",
+      "streamName": "QA GAM Preroll TEST 2",
+      "streamSlogan": "US",
+      "streamProfileDeepLink": "tunein://profile/s325032",
+      "streamTuneDeepLink": "tunein://tune/s325032",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationWithTwoImaVideoPrerolls": {
+      "searchQuery": "aa6-s325034",
+      "streamName": "QA GAM Preroll TEST 4",
+      "streamSlogan": "US",
+      "streamProfileDeepLink": "tunein://profile/s325034",
+      "streamTuneDeepLink": "tunein://tune/s325034",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationWithImaVideoAndAudioPrerolls": {
+      "searchQuery": "aa6-s325033",
+      "streamName": "QA GAM Preroll TEST 3",
+      "streamSlogan": "US",
+      "streamProfileDeepLink": "tunein://profile/s325033",
+      "streamTuneDeepLink": "tunein://tune/s325033",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamPodcastAdsExplicitlyEnabled": {
+      "searchQuery": "aa6-p3563331",
+      "streamName": "Wiser Than Me with Julia Louis-Dreyfus",
+      "streamSlogan": "Comedy >",
+      "streamProfileDeepLink": "tunein://profile/p3563331",
+      "streamTuneDeepLink": "tunein://tune/t291172012",
+      "streamType": "podcast",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "podcast",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamPodcastWithAdsExplicitlyDisabled": {
+      "searchQuery": "aa6-p886226",
+      "streamName": "Casefile True Crime",
+      "streamSlogan": "True Crime",
+      "streamProfileDeepLink": "tunein://profile/p886226",
+      "streamTuneDeepLink": "tunein://tune/t350141641",
+      "streamType": "podcast",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "podcast",
+      "streamFormat":["MP3"]
+    }
+  },
+  {
+    "streamStationNonPublic": {
+      "searchQuery": "aa6-s206902",
+      "streamName": "Smooth Jazz Florida",
+      "streamSlogan": "Smooth Jazz Nice and Easy - Relax and Enjoy",
+      "streamProfileDeepLink": "tunein://profile/s206902",
+      "streamTuneDeepLink": "tunein://tune/s206902",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamSwitchStationWithStopButton": {
+      "searchQuery": "aa6-s35231",
+      "streamName": "107.7 The Bone",
+      "streamSlogan": "San Francisco: The Bone Rocks The Bay",
+      "streamProfileDeepLink": "tunein://profile/s35231",
+      "streamTuneDeepLink": "tunein://tune/s35231",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamSwitchStationWithPauseButton": {
+      "searchQuery": "aa6-s35877",
+      "streamName": "98.5 KFOX",
+      "streamSlogan": "98.5 KFOX >",
+      "streamProfileDeepLink": "tunein://profile/s35877",
+      "streamTuneDeepLink": "tunein://tune/s35877",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationWithSwitchAndMidroll": {
+      "searchQuery": "aa6-s176340",
+      "streamName": "106.9 SFM",
+      "streamSlogan": "106.9 SFM - All About Sittingbourne",
+      "streamProfileDeepLink": "tunein://profile/s176340",
+      "streamTuneDeepLink": "tunein://tune/s176340",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationWithSwitchAndMidrollSecond": {
+      "searchQuery": "aa6-s30028",
+      "streamName": "97.9 Jamz",
+      "streamSlogan": "The Peoples Station",
+      "streamProfileDeepLink": "tunein://profile/s30028",
+      "streamTuneDeepLink": "tunein://tune/s30028",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "prerollDisabledStation": {
+      "searchQuery": "aa6-s35353",
+      "streamName": "Bolly 92.3",
+      "streamSlogan": "The Bay Area's bollywood Station",
+      "streamProfileDeepLink": "tunein://profile/s35353",
+      "streamTuneDeepLink": "tunein://tune/s35353",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationSwitchMix": {
+      "searchQuery": "aa6-s324667",
+      "streamName": "Switch Mix",
+      "streamSlogan": "Selena Gomez - Lose You to Love Me",
+      "streamProfileDeepLink": "tunein://profile/s324667",
+      "streamTuneDeepLink": "tunein://tune/s324667",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationWithDisabledPrerolls": {
+      "searchQuery": "aa6-s2793",
+      "streamName": "NRJ Belgique",
+      "streamSlogan": "Hit Music Only!",
+      "streamProfileDeepLink": "tunein://profile/s2793",
+      "streamTuneDeepLink": "tunein://tune/s2793",
+      "streamType": "liveStation",
+      "streamHasShows": false,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  },
+  {
+    "streamStationKFJC": {
+      "searchQuery": "aa6-s32633",
+      "streamName": "KFJC",
+      "streamSlogan": "Grave Shift",
+      "streamProfileDeepLink": "tunein://profile/s32633",
+      "streamTuneDeepLink": "tunein://tune/s32633",
+      "streamType": "liveStation",
+      "streamHasShows": true,
+      "isPremium": false,
+      "contentProfileType": "station",
+      "streamFormat": ["MP3"]
+    }
+  }
+]

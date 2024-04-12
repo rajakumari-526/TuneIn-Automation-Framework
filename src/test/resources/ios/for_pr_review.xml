@@ -1,0 +1,42 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="iOS PR Review Test Run" parallel="none" preserve-order="true">
+    <test name="New Tests">
+        <classes>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingGeneralTest"/>
+            <class name="com.tunein.mobile.tests.ios.contentprofile.IosContentProfileTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingScrollableTest"/>
+            <class name="com.tunein.mobile.tests.ios.authentication.IosSignInSignOutTest"/>
+            <class name="com.tunein.mobile.tests.ios.search.IosSearchTest"/>
+            <class name="com.tunein.mobile.tests.ios.homepage.IosHomePageTest"/>
+            <class name="com.tunein.mobile.tests.ios.upsell.IosUpsellTest"/>
+            <class name="com.tunein.mobile.tests.ios.interruptions.IosInterruptionsTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosMiniPlayerTest"/>
+            <class name="com.tunein.mobile.tests.ios.authentication.IosSignUpTest"/>
+            <class name="com.tunein.mobile.tests.ios.browsies.IosBrowsiesTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingMetaDataTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosNowPlayingButtonFunctionalityTest"/>
+            <class name="com.tunein.mobile.tests.ios.deeplinks.IosDeepLinksTest"/>
+            <class name="com.tunein.mobile.tests.ios.library.IosLibraryTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosCarModeTest"/>
+            <class name="com.tunein.mobile.tests.ios.userprofile.IosUserProfileTest"/>
+            <class name="com.tunein.mobile.tests.ios.navigation.IosNavigationTest"/>
+            <class name="com.tunein.mobile.tests.ios.upgrade.IosUpgradeTest"/>
+            <class name="com.tunein.mobile.tests.ios.subscription.IosSubscriptionTest"/>
+            <class name="com.tunein.mobile.tests.ios.explorer.IosExplorerPageTest"/>
+            <class name="com.tunein.mobile.tests.ios.nowplaying.IosSwitchTest"/>
+            <class name="com.tunein.reporting.tests.ios.ads.IosPrerollTest"/>
+            <class name="com.tunein.reporting.tests.ios.ads.IosAdsTest"/>
+            <class name="com.tunein.reporting.tests.ios.homepage.IosHomePageTest"/>
+            <class name="com.tunein.reporting.tests.ios.nowplaying.IosNowPlayingTest"/>
+            <class name="com.tunein.reporting.tests.ios.ads.IosMidrollTest"/>
+            <class name="com.tunein.reporting.tests.ios.ads.IosAdsWizzTest"/>
+            <class name="com.tunein.reporting.tests.ios.ads.IosIMATest"/>
+            <class name="com.tunein.reporting.tests.ios.ads.IosGAMTest"/>
+            <class name="com.tunein.reporting.tests.ios.ads.IosBannersTest"/>
+            <class name="com.tunein.reporting.tests.ios.explorer.IosExplorerPageTest"/>
+            <class name="com.tunein.reporting.tests.ios.boost.IosSwitchTest"/>
+            <class name="com.tunein.mobile.tests.ios.ads.IosAdsUITest"/>
+        </classes>
+    </test>
+</suite>
